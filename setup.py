@@ -22,7 +22,7 @@ setup(
     version="0.1.0",
     license="BSD",
     description="LCMAP REST Service Client (Python)",
-    long_description="%s\n%s" % (read("README.rst"), re.sub(":obj:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst"))),
+    long_description="%s" % read("README.md"),
     author="USGS EROS",
     author_email="http://eros.usgs.gov",
     url="https://github.com/usgs-eros/lcmap_client",
@@ -57,11 +57,3 @@ setup(
     ],
     extras_require={
         # eg: 'rst': ["docutils>=0.11"],
-    },
-    entry_points={
-        "console_scripts": [
-            "lcmap_client = lcmap_client.__main__:main"
-        ]
-    }
-
-)
