@@ -63,6 +63,22 @@ def make_auth_header(api_token):
     return {"X-AuthToken": api_token}
 
 
+class Response(object):
+
+    def __init__(self, http, response, result, errors):
+        self.http = http
+        self.response = response
+        self.status_code = response.status_code
+        self.result = result
+        self.errors = errors
+
+    def get_link(self):
+        return self.result.get("link").get("href")
+
+    def follow_link(self):
+        return self.http.get(self.get_link())
+
+
 class HTTP(object):
     def __init__(self, cfg=None):
         self.cfg = cfg
@@ -77,18 +93,37 @@ class HTTP(object):
         self.auth = auth
         self.session.headers.update(make_auth_header(auth.get_token()))
 
-    def request(self, method, path, *args, **kwargs):
+    def request(self, method, path, **kwargs):
         url = self.base_url + path
-        req = Request(*([method.upper(), url] + list(args)), **kwargs)
+        #req = Request(*([method.upper(), url] + list(args)), **kwargs)
+        log.debug("kwargs: {}".format(kwargs))
         log.debug("Making request with headers {}...".format(self.session.headers))
-        resp = self.session.send(req.prepare())
+        http_func = getattr(self.session, method.lower())
+        raw_resp = http_func(url, **kwargs)
+        #raw_resp = self.session.send(req.prepare())
+        errors = []
+        if raw_resp:
+            resp = raw_resp.json()
+            errors.extend(resp.get("errors") or [])
+        else:
+            resp = None
+        if raw_resp.status_code == 404:
+            msg = "Resource not found."
+            log.error(msg)
+            errors.append(msg)
         # XXX we'll need to change the following to parse the results based on
         # content type, but right now the server is returning the fairly useless
         # application/octet-stream type, even for JSON
-        return resp.json()
+        return Response(self, raw_resp, resp.get("result"), errors)
 
-    def post(self, path, *args, **kwargs):
-        return self.request('POST', path, *args, **kwargs)
+    def post(self, path, **kwargs):
+        return self.request('POST', path, **kwargs)
 
-    def get(self, path, *args, **kwargs):
-        return self.request('GET', path, *args, **kwargs)
+    def put(self, path, **kwargs):
+        return self.request('PUT', path, **kwargs)
+
+    def get(self, path, **kwargs):
+        return self.request('GET', path, **kwargs)
+
+    def delete(self, path,**kwargs):
+        return self.request('DELETE', path, **kwargs)

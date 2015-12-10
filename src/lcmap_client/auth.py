@@ -29,11 +29,13 @@ class Auth(dict):
             username = self.cfg.get_username()
         if not password:
             password = self.cfg.get_password()
-        user_data = self.http.post(
+        result = self.http.post(
             context + "/login",
             data={"username": username, "password": password})
-        self.update(user_data)
-        self.http.set_auth(self)
+        if result.errors:
+            log.error("Login unsuccessful: {}".format(result.errors))
+        self.update(result.result)
+        #self.http.set_auth(self)
         return self
 
     def get_token(self):
