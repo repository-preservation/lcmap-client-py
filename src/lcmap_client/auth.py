@@ -5,6 +5,7 @@ import lcmap_client
 
 context = "/auth"
 
+
 class UserData(dict):
 
     def get_token(self):
