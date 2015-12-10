@@ -3,7 +3,7 @@ from os import environ, path
 
 from six.moves.configparser import ConfigParser
 
-from lcmap_client import logger
+from lcmap_client import http, logger
 
 
 home = path.expanduser("~")

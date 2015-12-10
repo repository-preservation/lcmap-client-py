@@ -16,8 +16,8 @@ def serialize_level(name):
 
 
 def configure(cfg):
-    logging.BasicConfig(
+    logging.basicConfig(
         format='%(asctime)s %(message)s',
-        datefmt='%Y.%m.%d %I:%M:%S %P',
+        datefmt='%Y.%m.%d %H:%M:%S',
         level=cfg.get_log_level())
     logging.debug("Logging configured.")

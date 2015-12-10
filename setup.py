@@ -25,7 +25,7 @@ setup(
     long_description="%s" % read("README.md"),
     author="USGS EROS",
     author_email="http://eros.usgs.gov",
-    url="https://github.com/usgs-eros/lcmap_client",
+    url="https://github.com/usgs-eros/lcmap-client-py",
     packages=find_packages("src"),
     package_dir={"": "src"},
     py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
