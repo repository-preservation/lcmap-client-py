@@ -1,73 +1,40 @@
-===============================
-lcmap-client-py
-===============================
+# lcmap-client-py
 
-| |docs| |travis| |appveyor| |coveralls| |landscape| |scrutinizer|
-| |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+LCMAP REST Service Client for Python
 
-.. |docs| image:: https://readthedocs.org/projects/lcmap_client/badge/?style=flat
-    :target: https://readthedocs.org/projects/lcmap_client
-    :alt: Documentation Status
+[Very WIP ... not ready for use]
 
-.. |travis| image:: http://img.shields.io/travis/usgs-eros/lcmap_client/master.png?style=flat
-    :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/usgs-eros/lcmap_client
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/usgs-eros/lcmap_client?branch=master
-    :alt: AppVeyor Build Status
-    :target: https://ci.appveyor.com/project/usgs-eros/lcmap_client
+## Configuration
 
-.. |coveralls| image:: http://img.shields.io/coveralls/usgs-eros/lcmap_client/master.png?style=flat
-    :alt: Coverage Status
-    :target: https://coveralls.io/r/usgs-eros/lcmap_client
+Client library configuration is done using a Config/INI file. See the
 
-.. |landscape| image:: https://landscape.io/github/usgs-eros/lcmap_client/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/usgs-eros/lcmap_client/master
-    :alt: Code Quality Status
 
-.. |version| image:: http://img.shields.io/pypi/v/lcmap-client.png?style=flat
-    :alt: PyPI Package latest release
-    :target: https://pypi.python.org/pypi/lcmap-client
+## Documentation
 
-.. |downloads| image:: http://img.shields.io/pypi/dm/lcmap-client.png?style=flat
-    :alt: PyPI Package monthly downloads
-    :target: https://pypi.python.org/pypi/lcmap-client
+Full documentation for all LCMAP clients is available here:
+ * http://usgs-eros.github.io/lcmap-client-docs/current/
 
-.. |wheel| image:: https://pypip.in/wheel/lcmap-client/badge.png?style=flat
-    :alt: PyPI Wheel
-    :target: https://pypi.python.org/pypi/lcmap-client
+Note that per-client usage and example code is selectable via tabs in the upper-right of that page.
 
-.. |supported-versions| image:: https://pypip.in/py_versions/lcmap-client/badge.png?style=flat
-    :alt: Supported versions
-    :target: https://pypi.python.org/pypi/lcmap-client
 
-.. |supported-implementations| image:: https://pypip.in/implementation/lcmap-client/badge.png?style=flat
-    :alt: Supported imlementations
-    :target: https://pypi.python.org/pypi/lcmap-client
+## Example Usage
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/usgs-eros/lcmap_client/master.png?style=flat
-    :alt: Scrtinizer Status
-    :target: https://scrutinizer-ci.com/g/usgs-eros/lcmap_client/
+Starting:
 
-LCMAP REST Service Client (Python)
+```bash
+$ cd lcmap-client-py
+$ tox -e py34-shell
+```
 
-* Free software: BSD license
+```python
+>>> from lcmap_client import Client
+>>> client = Client()
+>>> result = client.models.samples.os_process.run(year=2017, delay=10)
+>>> result.follow_link()
+```
 
-Installation
-============
 
-::
+## License
 
-    pip install lcmap-client
-
-Documentation
-=============
-
-https://lcmap_client.readthedocs.org/
-
-Development
-===========
-
-To run the all tests run::
-
-    tox
+TBD
