@@ -6,7 +6,9 @@ log = logging.getLogger(__name__)
 
 def serialize_level(name):
     name = name.lower()
-    if name in ["all", "trace", "debug"]:
+    if name == "all":
+        return logging.NOTSET
+    if name in ["trace", "debug"]:
         return logging.DEBUG
     elif name == "info":
         return logging.INFO
@@ -24,5 +26,8 @@ def configure(cfg):
         datefmt='%Y.%m.%d %H:%M:%S',
         level=level,
         format='%(asctime)s %(levelname)s %(name)s - %(message)s')
-    logging.getLogger().setLevel(level)
-    log.debug("Logging configured with level {}".format(level))
+    if level == "none":
+        logging.getLogger().propagate = False
+    else:
+        logging.getLogger().setLevel(level)
+        log.debug("Logging configured with level {}".format(level))
