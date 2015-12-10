@@ -1,3 +1,15 @@
+"""
+The http module contains the primary HTTP class which provides convenience
+methods for making calls to the LCMAP service. Supporting module-level
+functions are also provided.
+
+The conveniences provided by the HTTP class include:
+* session setup
+* default headers
+* header updates based upon state changes
+* path-based requests (as opposed to whole URLs)
+
+"""
 import logging
 import sys
 

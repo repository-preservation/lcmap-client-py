@@ -1,3 +1,8 @@
+"""
+The authentication module holds the Auth class which is is not only responsible
+for the action of logging in, but also providing accessor method to the data
+obtained upon a successful login.
+"""
 import logging
 
 import requests

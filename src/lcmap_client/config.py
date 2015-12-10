@@ -1,3 +1,9 @@
+"""
+The config module provides the class holding configuraion data as well as
+various utility functions to support this. The configuration class wraps logic
+for obtaining configuration values from either the operating system environment
+or from a Config/INI file.
+"""
 import logging
 
 from os import environ, path
