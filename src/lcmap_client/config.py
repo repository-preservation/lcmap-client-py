@@ -24,7 +24,6 @@ def get_env(key):
 
 
 class Config:
-
     def __init__(self, filename=None):
         self.filename = filename
         self.reader = None

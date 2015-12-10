@@ -6,7 +6,24 @@ import lcmap_client
 context = "/auth"
 
 
-class UserData(dict):
+class Auth(dict):
+    def __init__(self, cfg=None, http=None, username="", password="", data={}):
+        super(Auth, self).__init__(data)
+        self.cfg = cfg
+        self.http = http
+        self.login(username, password)
+        self.refresh_token = self.login
+
+    def login(self, username="", password=""):
+        if not username:
+            username = self.cfg.get_username()
+        if not password:
+            password = self.cfg.get_password()
+        user_data = self.http.post(
+            context + "/login",
+            data={"username": username, "password": password})
+        self.update(user_data)
+        return self
 
     def get_token(self):
         return self.get("token")
