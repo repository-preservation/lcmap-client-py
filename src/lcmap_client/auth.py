@@ -1,8 +1,11 @@
+import logging
+
 import requests
 
 import lcmap_client
 
 
+log = logging.getLogger(__name__)
 context = "/auth"
 
 
@@ -15,6 +18,7 @@ class Auth(dict):
         self.refresh_token = self.login
 
     def login(self, username="", password=""):
+        log.debug("Logging in ...")
         if not username:
             username = self.cfg.get_username()
         if not password:

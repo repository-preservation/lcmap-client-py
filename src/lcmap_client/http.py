@@ -1,10 +1,11 @@
+import logging
 import sys
 
 from requests import Request, Session
 
 import lcmap_client
 
-
+log = logging.getLogger(__name__)
 context = "/api"
 server_version = "1.0"
 client_version = "0.1.0"
@@ -42,6 +43,7 @@ class HTTP(object):
     def request(self, method, path, *args, **kwargs):
         url = self.base_url + path
         req = Request(*([method.upper(), url] + list(args)), **kwargs)
+        log.debug("Making request ...")
         resp = self.session.send(req.prepare())
         # XXX we'll need to change the following to parse the results based on
         # content type, but right now the server is returning the fairly useless

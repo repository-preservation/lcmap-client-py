@@ -1,6 +1,9 @@
 import logging
 
 
+log = logging.getLogger(__name__)
+
+
 def serialize_level(name):
     name = name.lower()
     if name in ["all", "trace", "debug"]:
@@ -16,8 +19,10 @@ def serialize_level(name):
 
 
 def configure(cfg):
+    level = cfg.get_log_level()
     logging.basicConfig(
-        format='%(asctime)s %(message)s',
         datefmt='%Y.%m.%d %H:%M:%S',
-        level=cfg.get_log_level())
-    logging.debug("Logging configured.")
+        level=level,
+        format='%(asctime)s %(levelname)s %(name)s - %(message)s')
+    logging.getLogger().setLevel(level)
+    log.debug("Logging configured with level {}".format(level))

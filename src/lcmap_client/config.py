@@ -1,11 +1,14 @@
-from pylru import lrudecorator
+import logging
+
 from os import environ, path
 
 from six.moves.configparser import ConfigParser
 
+from pylru import lrudecorator
+
 from lcmap_client import http, logger
 
-
+log = logging.getLogger(__name__)
 home = path.expanduser("~")
 ini_file = path.join(home, ".usgs", "lcmap.ini")
 
@@ -15,6 +18,7 @@ def reader(filename=None):
     if filename is None:
         filename=ini_file
     cfg = ConfigParser()
+    log.debug("Reading configuration from {} ...".format(ini_file))
     cfg.read(filename)
     return cfg
 
@@ -24,16 +28,19 @@ def get_env(key):
 
 
 class Config:
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, force_reload=False):
         self.filename = filename
         self.reader = None
-        self.load()
+        if force_reload:
+            self.reload()
+        else:
+            self.load()
 
     def load(self):
         self.ini = reader(self.filename)
 
     def reload(self):
-        self.reader.clear()
+        reader.clear()
         self.load()
 
     # Configuration accessors
