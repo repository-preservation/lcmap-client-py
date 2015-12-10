@@ -34,8 +34,9 @@ def get_env(key):
 
 
 class Config:
-    def __init__(self, filename=None, force_reload=False):
+    def __init__(self, filename=None, force_reload=False, colored_logs=True):
         self.filename = filename
+        self.colored_logs = colored_logs
         self.reader = None
         if force_reload:
             self.reload()
