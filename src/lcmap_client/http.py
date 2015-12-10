@@ -17,6 +17,7 @@ from requests import Request, Session
 
 import lcmap_client
 
+
 log = logging.getLogger(__name__)
 context = "/api"
 server_version = "1.0"
@@ -30,7 +31,14 @@ user_agent = "LCMAP REST Client/{} (Python {}) (+{})".format(
 
 
 def split_media_type(media_type):
-    [type, suffix] = media_type.split("/")
+    split = media_type.split("/")
+    if len(split) == 1:
+        log.debug("Only got one part for the media type: {}".format(split))
+        [type, suffix] = ["application", split[0]]
+    elif len(split) == 2:
+        [type, suffix] = split
+    else:
+        [type, suffix] = split[:2]
     return {"type": type, "suffix": suffix}
 
 
@@ -41,21 +49,38 @@ def format_accept(vendor, version, content_type):
 
 
 def get_base_headers():
-    return {}
+    return {"User-Agent": user_agent}
+
+
+def make_headers(version, content_type):
+    headers = get_base_headers()
+    headers.update(
+        {"Accept": format_accept(vendor, version, content_type)})
+    return headers
+
+
+def make_auth_header(api_token):
+    return {"X-AuthToken": api_token}
 
 
 class HTTP(object):
-    def __init__(self, cfg=None, base_context=""):
+    def __init__(self, cfg=None):
         self.cfg = cfg
-        self.base_context = base_context
-        self.base_url = self.cfg.get_endpoint() + self.base_context
+        self.auth = None
+        self.base_url = self.cfg.get_endpoint()
         self.session = Session()
-        self.session.headers.update(get_base_headers())
+        self.session.headers.update(make_headers(
+            version=self.cfg.get_version(),
+            content_type=self.cfg.get_content_type()))
+
+    def set_auth(self, auth):
+        self.auth = auth
+        self.session.headers.update(make_auth_header(auth.get_token()))
 
     def request(self, method, path, *args, **kwargs):
         url = self.base_url + path
         req = Request(*([method.upper(), url] + list(args)), **kwargs)
-        log.debug("Making request ...")
+        log.debug("Making request with headers {}...".format(self.session.headers))
         resp = self.session.send(req.prepare())
         # XXX we'll need to change the following to parse the results based on
         # content type, but right now the server is returning the fairly useless

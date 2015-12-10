@@ -8,10 +8,11 @@ import logging
 import requests
 
 import lcmap_client
+from lcmap_client import url
 
 
 log = logging.getLogger(__name__)
-context = "/auth"
+context = url.base_context + "/auth"
 
 
 class Auth(dict):
@@ -32,6 +33,7 @@ class Auth(dict):
             context + "/login",
             data={"username": username, "password": password})
         self.update(user_data)
+        self.http.set_auth(self)
         return self
 
     def get_token(self):
