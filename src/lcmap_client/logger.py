@@ -1,5 +1,7 @@
 import logging
 
+import six
+
 from termcolor import colored
 
 
@@ -39,9 +41,14 @@ class Formatter(logging.Formatter):
                 self.custom_process_format,
                 self.custom_level_format,
                 self.custom_module_format)
-        self._style = logging._STYLES['%'][0](fmt)
+        self.update_style(fmt)
         self._fmt = fmt
         return logging.Formatter.format(self, record)
+
+    def update_style(self, fmt):
+        if six.PY2:
+            return
+        self._style = logging._STYLES['%'][0](fmt)
 
     def formatTime(self, record, datefmt=None):
         if not datefmt:
