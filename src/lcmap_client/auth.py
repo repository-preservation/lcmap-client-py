@@ -35,7 +35,7 @@ class Auth(dict):
         if result.errors:
             log.error("Login unsuccessful: {}".format(result.errors))
         self.update(result.result)
-        #self.http.set_auth(self)
+        self.http.set_auth(self)
         return self
 
     def get_token(self):
