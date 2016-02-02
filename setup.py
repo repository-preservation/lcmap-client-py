@@ -10,12 +10,19 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
+from pip.req import parse_requirements
+
 
 def read(*names, **kwargs):
     return io.open(
         join(dirname(__file__), *names),
         encoding=kwargs.get("encoding", "utf8")
     ).read()
+
+
+def get_install_reqs(req_file):
+    [str(req_data.req) for req_data in parse_requirements(req_file)]
+
 
 setup(
     name="lcmap-client",
@@ -52,9 +59,7 @@ setup(
     keywords=[
         # eg: "keyword1", "keyword2", "keyword3",
     ],
-    install_requires=[
-        # eg: "aspectlib==1.1.1", "six>=1.7",
-    ],
+    install_requires=get_install_reqs("./requirements.txt"),
     extras_require={
         # eg: 'rst': ["docutils>=0.11"],
     })
