@@ -21,7 +21,7 @@ def read(*names, **kwargs):
 
 
 def get_install_reqs(req_file):
-    [str(req_data.req) for req_data in parse_requirements(req_file)]
+    [str(req_data.req) for req_data in parse_requirements(req_file, session=False)]
 
 
 setup(
