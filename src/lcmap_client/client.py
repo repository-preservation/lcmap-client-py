@@ -10,7 +10,7 @@ import logging
 
 from requests import Request
 
-from lcmap_client import auth, http, jobs, logger, models, url
+from lcmap_client import auth, http, jobs, logger, models, data, url
 from lcmap_client.config import Config
 
 
@@ -43,6 +43,7 @@ class Client(object):
         self.http = http.HTTP(cfg=self.cfg)
         self.auth = auth.Auth(cfg=self.cfg, http=self.http)
         self.models = models.Models(self.http)
+        self.data = data.Data(self.http)
 
     def configure(self, force_reload=False, colored_logs=True):
         self.cfg = Config(force_reload=force_reload, colored_logs=colored_logs)
