@@ -5,3 +5,4 @@ gnureadline
 termcolor
 nose
 numpy
+gdal

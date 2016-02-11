@@ -7,7 +7,7 @@ from lcmap_client.data import url
 
 
 log = logging.getLogger(__name__)
-context = url.context + "/surface-reflectance/tiles"
+context = url.context + "/surface-reflectance/"
 
 
 # XXX Define more types
@@ -17,30 +17,79 @@ gdal_numpy_mapping = {
 }
 
 
-def decode(result):
+def decode(spec, result):
     """Create masked numpy array from tile result's encoded data"""
-    t = gdal_numpy_mapping[result['data_type']]
+    t = gdal_numpy_mapping[spec['data_type']]
     s = base64.b64decode(result['data'])
     a = np.frombuffer(s, dtype=t)
 
-    log.debug("{ubid} {x},{y}".format(**result))
+    log.debug("decoding {ubid}:{x},{y}".format(**result))
 
-    if result['data_fill']:
-        log.debug("data fill: {}".format(result['data_fill']))
-        a = ma.masked_equal(a, result['data_fill'])
-    if result['data_range']:
+    if spec['data_fill']:
+        log.debug("masking fill: {}".format(spec['data_fill']))
+        a = ma.masked_equal(a, spec['data_fill'])
+    if spec['data_range']:
         v1, v2 = result['data_range']
-        log.debug("data range: {}".format(result['data_range']))
+        log.debug("masking range: {}".format(spec['data_range']))
         a = ma.masked_outside(a, v1, v2)
-    if result['data_shape']:
-        log.debug("data shape: {}".format(result['data_shape']))
-        a = a.reshape(result['data_shape'])
-    if result['data_scale']:
-        log.debug("data scale: {}".format(result['data_scale']))
-        a = a * result['data_scale']
+    if spec['data_shape']:
+        log.debug("shaping: {}".format(spec['data_shape']))
+        a = a.reshape(spec['data_shape'])
+    if spec['data_scale']:
+        log.debug("scaling: {}".format(spec['data_scale']))
+        a = a * spec['data_scale']
 
-    result['array'] = a
-    return result
+    return a
+
+
+class Dice(object):
+    
+    def __init__(self, response):
+        self._source = response.result
+        self._spec = response.result['spec']
+        self._tiles = [Tile(tile, self._spec) for tile in res.result['tiles']]
+
+    def tiles(self):
+        return self._tiles
+
+    def rod(self):
+        return []
+
+
+class Tile(object):
+
+    def __init__(self, tile, spec):
+        # We preserve the original tile object because it has useful information...
+        # - upper left (x,y) in projection coordinate system
+        # - acquisition date
+        # - universal band ID
+        self._tile = tile
+        self._data = decode(spec, tile)
+        pass
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def spec(self):
+        return self._spec
+
+    @property
+    def x(self):
+        return int(self._tile['x'])
+
+    @property
+    def y(self):
+        return int(self._tile['y'])
+
+    @property
+    def ubid(self):
+        return self._tile['ubid']
+
+    @property
+    def acquired(self):
+        return self._tile['acquired']
 
 
 class SurfaceReflectance(object):
@@ -55,5 +104,10 @@ class SurfaceReflectance(object):
     def tiles(self, band, point, time):
         """Get tiles for given band, point, and ISO8601 time range"""
         log.debug("getting tiles ubid: {0}, point: ({1}) time: {2}".format(band, point, time))
-        res = self.http.get(context, params = {"band": band, "point": point, "time": time})
-        return [decode(r) for r in res.result]
+        response = self.http.get(context + "tiles", params = {"band": band, "point": point, "time": time})
+        # Spec contains metadata that describes the location, shape, and type 
+        # of data within a projection coordinate system. It is used to decode
+        # scale, and mask data.
+        spec = response.result['spec']
+        return (spec, [Tile(t,spec) for t in response.result['tiles']])
+
