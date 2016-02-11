@@ -76,6 +76,10 @@ class Tile(object):
     def acquired(self):
         return self._tile['acquired']
 
+    @property
+    def source(self):
+        return self._tile['source']
+
     def __getitem__(self, proj_point):
         """Get value for given projection point"""
         tm = transform_matrix(self, self._spec) # blech
@@ -105,5 +109,5 @@ class SurfaceReflectance(object):
     def rod(self, band, x, y, t1, t2):
         """Get spec and rod for given band, point, x, y and times"""
         spec, tiles = self.tiles(band, x, y, t1, t2)
-        time_and_value = [(t.acquired, tile[x,y]) for tile in self.tiles]
+        time_and_value = [(tile.source, tile.acquired, tile[x,y]) for tile in tiles]
         return spec, time_and_value

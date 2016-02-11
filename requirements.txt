@@ -6,3 +6,4 @@ termcolor
 nose
 numpy
 gdal
+click

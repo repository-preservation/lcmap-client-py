@@ -34,6 +34,15 @@ $ tox -e py34-shell
 >>> result.follow_link()
 ```
 
+```bash
+$  lcmap-client -s red -s blue -s green --x -1850865 --y 2956785 --t1 2013-01-01 --t2 2015-01-01 
+```
+
+## Development
+
+$
+$
+
 
 ## License
 
