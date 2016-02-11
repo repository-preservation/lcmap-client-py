@@ -4,6 +4,7 @@ import numpy as np
 import numpy.ma as ma
 
 from lcmap_client.data import url
+from lcmap_client.util import proj_point_to_tile_point, transform_matrix
 
 
 log = logging.getLogger(__name__)
@@ -42,29 +43,13 @@ def decode(spec, result):
     return a
 
 
-class Dice(object):
-    
-    def __init__(self, response):
-        self._source = response.result
-        self._spec = response.result['spec']
-        self._tiles = [Tile(tile, self._spec) for tile in res.result['tiles']]
-
-    def tiles(self):
-        return self._tiles
-
-    def rod(self):
-        return []
-
-
 class Tile(object):
 
     def __init__(self, tile, spec):
-        # We preserve the original tile object because it has useful information...
-        # - upper left (x,y) in projection coordinate system
-        # - acquisition date
-        # - universal band ID
         self._tile = tile
+        self._spec = spec
         self._data = decode(spec, tile)
+        self._point_transformer = transform_matrix(self, spec)
         pass
 
     @property
@@ -91,6 +76,13 @@ class Tile(object):
     def acquired(self):
         return self._tile['acquired']
 
+    def __getitem__(self, proj_point):
+        """Get value for given projection point"""
+        tm = transform_matrix(self, self._spec) # blech
+        x, y = proj_point
+        tx, ty = proj_point_to_tile_point(x, y, tm)
+        return self._data[tx,ty]
+
 
 class SurfaceReflectance(object):
 
@@ -101,13 +93,17 @@ class SurfaceReflectance(object):
     def initialize(self):
         pass
 
-    def tiles(self, band, point, time):
-        """Get tiles for given band, point, and ISO8601 time range"""
-        log.debug("getting tiles ubid: {0}, point: ({1}) time: {2}".format(band, point, time))
-        response = self.http.get(context + "tiles", params = {"band": band, "point": point, "time": time})
-        # Spec contains metadata that describes the location, shape, and type 
-        # of data within a projection coordinate system. It is used to decode
-        # scale, and mask data.
-        spec = response.result['spec']
-        return (spec, [Tile(t,spec) for t in response.result['tiles']])
+    def tiles(self, band, x, y, t1, t2):
+        """Get spec and tiles for given band, x, y, and times"""
+        log.debug("getting tiles ubid: {0}, point: ({1},{2}), time: {3}/{4}".format(band, x, y, t1, t2))
+        point = "{0},{1}".format(x,y)
+        time = "{0}/{1}".format(t1,t2)
+        resp = self.http.get(context + "tiles", params = {"band": band, "point": point, "time": time})
+        spec = resp.result['spec']
+        return (spec, [Tile(t,spec) for t in resp.result['tiles']])
 
+    def rod(self, band, x, y, t1, t2):
+        """Get spec and rod for given band, point, x, y and times"""
+        spec, tiles = self.tiles(band, x, y, t1, t2)
+        time_and_value = [(t.acquired, tile[x,y]) for tile in self.tiles]
+        return spec, time_and_value

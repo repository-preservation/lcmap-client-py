@@ -23,8 +23,7 @@ def proj_point_to_tile_point(proj_x, proj_y, transform):
                proj_y * inv_transform[5])
     return (int(floor(image_x)), int(floor(image_y)))
 
-def image_transform(tile, spec):
-    """Meow"""
+def transform_matrix(tile, spec):
     UpperLeftMapX, UpperLeftMapY = tile.x, tile.y
     PixelResolutionMetersX, PixelResolutionMetersY = spec['pixel_x'], spec['pixel_y']
     Rotation = 0.0
