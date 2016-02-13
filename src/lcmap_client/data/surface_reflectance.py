@@ -109,5 +109,6 @@ class SurfaceReflectance(object):
     def rod(self, band, x, y, t1, t2):
         """Get spec and rod for given band, point, x, y and times"""
         spec, tiles = self.tiles(band, x, y, t1, t2)
-        time_and_value = [(tile.source, tile.acquired, tile[x,y]) for tile in tiles]
+        ubid = spec['ubid']
+        time_and_value = [{'value':t[x,y], 'acquired':t.acquired, 'source':t.source, 'ubid':ubid} for t in tiles]
         return spec, time_and_value

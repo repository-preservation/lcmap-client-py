@@ -65,5 +65,5 @@ setup(
     },
     entry_points='''
         [console_scripts]
-        lcmap-client=lcmap_client.cli:get_rod
+        lcmap-client=lcmap_client.cli:cli
     ''')
