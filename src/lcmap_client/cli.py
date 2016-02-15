@@ -58,7 +58,7 @@ def cli():
 
 
 @click.command()
-@click.option('--spectra', '-s', multiple=True, type=click.Choice(spectra_to_bands.keys()))
+@click.option('--spectra', '-s', multiple=True, type=click.Choice('blue','green','red','ir','swir-1','swir-2','tirs-1','cf'))
 @click.option('--x', '-x', type=int)
 @click.option('--y', '-y', type=int)
 @click.option('--t1')
@@ -83,9 +83,8 @@ def rod(spectra, x, y, t1, t2):
   df = pd.DataFrame(result)
   pdf = df.pivot(index='source',columns='spectrum')
   adf = pdf['acquired'].iloc[:,0]
-  vdf = pdf['value'].iloc[:,:]
+  vdf = pdf['value'].loc[:,spectra]
   combined = list(zip(adf.values, vdf.values))
-
   print(json.dumps(combined, indent=4, cls=NumpyEncoder))
 
 
