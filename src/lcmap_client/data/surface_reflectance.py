@@ -4,7 +4,7 @@ import numpy as np
 import numpy.ma as ma
 
 from lcmap_client.data import url
-from lcmap_client.geom import proj_point_to_tile_point, transform_matrix
+from lcmap_client import geom
 
 
 log = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ gdal_numpy_mapping = {
 
 
 def decode(spec, result):
-    """Create masked numpy array from tile result's encoded data"""
+    "Create masked numpy array from tile result's encoded data"
     t = gdal_numpy_mapping[spec['data_type']]
     s = base64.b64decode(result['data'])
     a = np.frombuffer(s, dtype=t)
@@ -49,7 +49,7 @@ class Tile(object):
         self._tile = tile
         self._spec = spec
         self._data = decode(spec, tile)
-        self._point_transformer = transform_matrix(self, spec)
+        self._point_transformer = geom.get_transform_matrix(self, spec)
         pass
 
     @property
@@ -82,9 +82,11 @@ class Tile(object):
 
     def __getitem__(self, proj_point):
         """Get value for given projection point"""
-        tm = transform_matrix(self, self._spec)  # blech
+        # XXX why isn't this next line using the self._point_transformer matrix
+        #     that's areadly been created?
+        tm = geom.get_transform_matrix(self, self._spec)  # blech
         x, y = proj_point
-        tx, ty = proj_point_to_tile_point(x, y, tm)
+        tx, ty = geom.transform_coord(proj_point, tm, src="map", dst="image")
         return self._data[tx, ty]
 
 
@@ -98,17 +100,23 @@ class SurfaceReflectance(object):
         pass
 
     def tiles(self, band, x, y, t1, t2):
-        """Get spec and tiles for given band, x, y, and times"""
-        log.debug("getting tiles ubid: {0}, point: ({1},{2}), time: {3}/{4}".format(band, x, y, t1, t2))
+        "Get spec and tiles for given band, x, y, and times"
+        log_msg = "getting tiles ubid: {0}, point: ({1},{2}), time: {3}/{4}"
+        log.debug(log_msg.format(band, x, y, t1, t2))
         point = "{0},{1}".format(x, y)
         time = "{0}/{1}".format(t1, t2)
-        resp = self.http.get(context + "tiles", params={"band": band, "point": point, "time": time})
+        resp = self.http.get(
+                context + "tiles",
+                params={"band": band, "point": point, "time": time})
         spec = resp.result['spec']
         return (spec, [Tile(t, spec) for t in resp.result['tiles']])
 
     def rod(self, band, x, y, t1, t2):
-        """Get spec and rod for given band, point, x, y and times"""
+        "Get spec and rod for given band, point, x, y and times"
         spec, tiles = self.tiles(band, x, y, t1, t2)
         ubid = spec['ubid']
-        time_and_value = [{'value': t[x, y], 'acquired':t.acquired, 'source':t.source, 'ubid':ubid} for t in tiles]
+        time_and_value = [
+                {'value': t[x, y],
+                 'acquired': t.acquired,
+                 'source': t.source, 'ubid':ubid} for t in tiles]
         return spec, time_and_value
