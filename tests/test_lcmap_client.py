@@ -1,10 +1,12 @@
 import unittest
 
 from lcmap_client import Client
-from lcmap_client import util
+from lcmap_client import geom
+
 
 if __name__ == '__main__':
     unittest.main()
+
 
 class ClientTestCase(unittest.TestCase):
 
@@ -51,33 +53,33 @@ class ClientTestCase(unittest.TestCase):
         self.assertEqual(self.tile[px,py], self.tile.data[tx,ty])
 
     def test_upper_left_proj_point_to_tile_point(self):
-        t = util.transform_matrix(self.tile, self.spec)
+        t = geom.transform_matrix(self.tile, self.spec)
         px, py = -1850865, 2956785
-        point = util.proj_point_to_tile_point(px, py, t)
+        point = geom.proj_point_to_tile_point(px, py, t)
         self.assertEqual(point, (0,0))
 
     def test_upper_right_proj_point_to_tile_point(self):
-        t = util.transform_matrix(self.tile, self.spec)
+        t = geom.transform_matrix(self.tile, self.spec)
         px, py = -1850865+(30*255), 2956785
-        point = util.proj_point_to_tile_point(px, py, t)
+        point = geom.proj_point_to_tile_point(px, py, t)
         self.assertEqual(point, (255,0))
 
     def test_lower_left_proj_point_to_tile_point(self):
-        t = util.transform_matrix(self.tile, self.spec)
+        t = geom.transform_matrix(self.tile, self.spec)
         px, py = -1850865, 2956785 + ((-30)*(256-1))
-        point = util.proj_point_to_tile_point(px, py, t)
+        point = geom.proj_point_to_tile_point(px, py, t)
         self.assertEqual(point, (0,255))
 
     def test_lower_right_proj_point_to_tile_point(self):
-        t = util.transform_matrix(self.tile, self.spec)
+        t = geom.transform_matrix(self.tile, self.spec)
         px, py = -1850865+(30*255), 2956785+((-30)*255)
-        point = util.proj_point_to_tile_point(px, py, t)
+        point = geom.proj_point_to_tile_point(px, py, t)
         self.assertEqual(point, (255,255))
 
     def test_proj_point_offset_from_pixel_grid(self):
-        t = util.transform_matrix(self.tile, self.spec)
+        t = geom.transform_matrix(self.tile, self.spec)
         px, py  = -1850865+2, 2956785-2
-        point = util.proj_point_to_tile_point(px, py, t)
+        point = geom.proj_point_to_tile_point(px, py, t)
         self.assertEqual(point, (0,0))
 
     def test_rod(self):

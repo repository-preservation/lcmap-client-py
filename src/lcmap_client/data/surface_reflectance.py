@@ -4,7 +4,7 @@ import numpy as np
 import numpy.ma as ma
 
 from lcmap_client.data import url
-from lcmap_client.util import proj_point_to_tile_point, transform_matrix
+from lcmap_client.geom import proj_point_to_tile_point, transform_matrix
 
 
 log = logging.getLogger(__name__)
