@@ -26,8 +26,8 @@ def proj_point_to_tile_point(proj_x, proj_y, transform):
 
 
 def transform_matrix(tile, spec):
-    UpperLeftMapX, UpperLeftMapY = tile.x, tile.y
-    PixelResolutionMetersX, PixelResolutionMetersY = spec['pixel_x'], spec['pixel_y']
-    Rotation = 0.0
-    return [UpperLeftMapX, PixelResolutionMetersX, Rotation,
-            UpperLeftMapY, Rotation, PixelResolutionMetersY]
+    upper_left_map_x, upper_left_map_y = tile.x, tile.y
+    pixel_res_meters_x, pixel_res_meters_y = spec['pixel_x'], spec['pixel_y']
+    rotation = 0.0
+    return [upper_left_map_x, pixel_res_meters_x, rotation,
+            upper_left_map_y, rotation, pixel_res_meters_y]
