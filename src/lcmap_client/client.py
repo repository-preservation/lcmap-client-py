@@ -8,9 +8,7 @@ supporting components.
 """
 import logging
 
-from requests import Request
-
-from lcmap_client import auth, http, jobs, logger, models, data, url
+from lcmap_client import auth, http, logger, models, data, url
 from lcmap_client.config import Config
 
 

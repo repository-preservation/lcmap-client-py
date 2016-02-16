@@ -1,6 +1,7 @@
 from math import floor
 from osgeo import gdal
 
+
 def tile_point_to_proj_point(tile_x, tile_y, transform):
     """Translate image coordinates into map coordinates"""
     map_x = (transform[0] +
@@ -22,6 +23,7 @@ def proj_point_to_tile_point(proj_x, proj_y, transform):
                proj_x * inv_transform[4] +
                proj_y * inv_transform[5])
     return (int(floor(image_x)), int(floor(image_y)))
+
 
 def transform_matrix(tile, spec):
     UpperLeftMapX, UpperLeftMapY = tile.x, tile.y

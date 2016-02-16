@@ -12,7 +12,7 @@ from six.moves.configparser import ConfigParser
 
 from pylru import lrudecorator
 
-from lcmap_client import http, logger
+from lcmap_client import logger
 
 log = logging.getLogger(__name__)
 home = path.expanduser("~")
@@ -22,7 +22,7 @@ ini_file = path.join(home, ".usgs", "lcmap.ini")
 @lrudecorator(1024)
 def reader(filename=None):
     if filename is None:
-        filename=ini_file
+        filename = ini_file
     cfg = ConfigParser()
     log.debug("Reading configuration from {} ...".format(ini_file))
     cfg.read(filename)
@@ -77,6 +77,3 @@ class Config:
 
     def get_logging_namespaces(self):
         return self.get(key="logging-namespaces")
-
-
-

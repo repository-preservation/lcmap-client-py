@@ -5,9 +5,6 @@ obtained upon a successful login.
 """
 import logging
 
-import requests
-
-import lcmap_client
 from lcmap_client import url
 
 

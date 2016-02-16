@@ -24,6 +24,10 @@ def serialize_level(name):
         return logging.CRITICAL
 
 
+def always_true(_):
+    return True
+
+
 class Formatter(logging.Formatter):
 
     custom_date_format = '%Y.%m.%d %H:%M:%S'
@@ -32,7 +36,7 @@ class Formatter(logging.Formatter):
     custom_process_format = '[%(processName)s]'
     custom_level_format = '%(levelname)s'
     custom_record_format = '{} {} {} {} - %(message)s'
-    usesTime = lambda _: True
+    usesTime = always_true
 
     def format(self, record, fmt=None):
         if not fmt:
@@ -50,10 +54,10 @@ class Formatter(logging.Formatter):
             return
         self._style = logging._STYLES['%'][0](fmt)
 
-    def formatTime(self, record, datefmt=None):
+    def format_time(self, record, datefmt=None):
         if not datefmt:
             datefmt = self.custom_date_format
-        return logging.Formatter.formatTime(self, record, datefmt)
+        return logging.Formatter.format_time(self, record, datefmt)
 
 
 class ColoredFormatter(Formatter):
