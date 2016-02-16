@@ -55,7 +55,7 @@ spectra_to_bands = {
 
 
 spectra_choices = click.Choice(
-    'blue', 'green', 'red', 'ir', 'swir-1', 'swir-2', 'tirs-1', 'cf')
+    ['blue', 'green', 'red', 'ir', 'swir-1', 'swir-2', 'tirs-1', 'cf'])
 
 
 @click.group()
