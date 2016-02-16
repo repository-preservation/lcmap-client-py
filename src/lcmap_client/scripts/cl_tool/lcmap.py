@@ -17,6 +17,6 @@ def lcmap(context, log_level):
     """The lcmap command line tool.
 
     'lcmap' allows you to easily execute queries against the LCMAP service
-    from the command line, facilitating integration with exitsting tools
+    from the command line, facilitating integration with existing tools
     and workflows.
     """
