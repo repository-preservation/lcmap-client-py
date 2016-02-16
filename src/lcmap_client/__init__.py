@@ -1,8 +1,10 @@
 import logging
 
-from lcmap_client import client
+from lcmap_client import client, util
 
+
+__version__ = "0.1.0"
 
 log = logging.getLogger(__name__)
-__version__ = "0.1.0"
+
 Client = client.Client

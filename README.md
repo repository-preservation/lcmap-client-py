@@ -7,7 +7,9 @@ LCMAP REST Service Client for Python
 
 ## Configuration
 
-Client library configuration is done using a Config/INI file. See the
+Client library configuration is done using a Config/INI file. For more
+information, visit the client documentation link below -- in particular, the
+section "The Client Libraries" > "Configuration".
 
 
 ## Documentation
@@ -37,13 +39,26 @@ $ tox -e py34-shell
 ## CLI Tools
 
 ```bash
-$  lcmap-client rod --x -1789425 --y 3073665 --t1 2010-01-01 --t2 2015-01-01
+$  lcmap query rod --x -1789425 --y 3073665 --t1 2010-01-01 --t2 2015-01-01
 ```
+
+To see what's available:
+
+```bash
+$ lcmap --help
+```
+
+And for help on the subcommands:
+
+```bash
+$ lcmap query --help
+$ lcmap query rod --help
+```
+
 
 ## Development
 
-$
-$
+TBD
 
 
 ## License
