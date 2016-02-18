@@ -63,4 +63,6 @@ TBD
 
 ## License
 
-Nasa Open Source Agreement, Version 1.3.
+Copyright © 2015-2016, USGS EROS
+
+NASA Open Source Agreement, Version 1.3.
