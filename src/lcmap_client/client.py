@@ -8,9 +8,9 @@ supporting components.
 """
 import logging
 
-from lcmap_client import api
-from lcmap_client.api import routes
 from lcmap_client import cfg, http, logger
+from lcmap_client.api import (auth, compatibility, data, jobs, models,
+                              notifications, routes, system, users)
 
 
 log = logging.getLogger(__name__)
@@ -43,14 +43,14 @@ class Client(object):
         self.configure(force_reload=force_reload, colored_logs=colored_logs)
         self.http = http.HTTP(cfg=self.cfg)
         log.debug("\tSetting up primary components ...")
-        self.auth = api.auth.Auth(cfg=self.cfg, http=self.http)
+        self.auth = auth.Auth(cfg=self.cfg, http=self.http)
         self.compatibility = api.compatibility.Compatibility(self.http)
-        self.data = api.data.Data(self.http)
-        self.jobs = api.jobs.Jobs(self.http)
-        self.models = api.models.Models(self.http)
-        self.notifications = api.notifications.Notifications(self.http)
-        self.system = api.system.System(self.http)
-        self.users = api.users.Users(self.http)
+        self.data = data.Data(self.http)
+        self.jobs = jobs.Jobs(self.http)
+        self.models = models.Models(self.http)
+        self.notifications = notifications.Notifications(self.http)
+        self.system = system.System(self.http)
+        self.users = users.Users(self.http)
 
     def configure(self, force_reload=False, colored_logs=True):
         self.cfg = cfg.Config(force_reload=force_reload, colored_logs=colored_logs)
