@@ -9,12 +9,13 @@ supporting components.
 import logging
 
 from lcmap_client import api
-from lcmap_client import cfg, http, logger, url
+from lcmap_client.api import routes
+from lcmap_client import cfg, http, logger
 
 
 log = logging.getLogger(__name__)
 
-context = url.base_context
+context = routes.base_context
 
 
 class Client(object):
