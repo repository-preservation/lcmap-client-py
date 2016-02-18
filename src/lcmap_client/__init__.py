@@ -1,6 +1,6 @@
 import logging
 
-from lcmap_client import client, util
+from lcmap_client import client
 
 
 __version__ = "0.1.0"

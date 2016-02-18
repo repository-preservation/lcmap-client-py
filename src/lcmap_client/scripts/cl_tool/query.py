@@ -3,7 +3,6 @@ import logging
 
 import click
 
-import numpy as np
 import pandas as pd
 
 from lcmap_client import Client, serializer, util
@@ -20,6 +19,7 @@ spectra_choices = click.Choice(spectra_names)
 @click.pass_obj
 def query(config):
     "Run data queries against the LCMAP Data Warehouse."
+
 
 @query.command()
 @click.pass_obj

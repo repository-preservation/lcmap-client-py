@@ -1,11 +1,10 @@
 """
-The config module provides the class holding configuraion data as well as
+The cfg module provides the class holding configuraion data as well as
 various utility functions to support this. The configuration class wraps logic
 for obtaining configuration values from either the operating system environment
 or from a Config/INI file.
 """
 import logging
-
 from os import environ, path
 
 from six.moves.configparser import ConfigParser
@@ -14,7 +13,9 @@ from pylru import lrudecorator
 
 from lcmap_client import logger
 
+
 log = logging.getLogger(__name__)
+
 home = path.expanduser("~")
 ini_file = path.join(home, ".usgs", "lcmap.ini")
 

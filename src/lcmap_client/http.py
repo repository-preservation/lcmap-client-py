@@ -17,6 +17,7 @@ from requests import Session
 
 
 log = logging.getLogger(__name__)
+
 default_endpoint = "http://localhost:8080"
 default_content_type = "json"
 vendor = "vnd.usgs.lcmap"

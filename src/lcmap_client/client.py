@@ -8,28 +8,29 @@ supporting components.
 """
 import logging
 
-from lcmap_client import auth, http, logger, models, data, url
-from lcmap_client.config import Config
+from lcmap_client import api
+from lcmap_client import cfg, http, logger, url
 
 
 log = logging.getLogger(__name__)
+
 context = url.base_context
 
 
 class Client(object):
     def __init__(self, force_reload=False, colored_logs=True):
-        # API components
+        # Primary API components
+        self.auth = None
         self.compatibility = None
         self.data = None
         self.jobs = None
         self.models = None
         self.notifications = None
-        self.systen = None
+        self.system = None
         self.users = None
 
         # Supporting components
         self.cfg = None
-        self.auth = None
         self.http = None
 
         # Initialization
@@ -37,14 +38,21 @@ class Client(object):
 
     def initialize(self, force_reload=False, colored_logs=True):
         log.debug("Initializing client components ...")
+        log.debug("\tSetting up supporting components ...")
         self.configure(force_reload=force_reload, colored_logs=colored_logs)
         self.http = http.HTTP(cfg=self.cfg)
-        self.auth = auth.Auth(cfg=self.cfg, http=self.http)
-        self.models = models.Models(self.http)
-        self.data = data.Data(self.http)
+        log.debug("\tSetting up primary components ...")
+        self.auth = api.auth.Auth(cfg=self.cfg, http=self.http)
+        self.compatibility = api.compatibility.Compatibility(self.http)
+        self.data = api.data.Data(self.http)
+        self.jobs = api.jobs.Jobs(self.http)
+        self.models = api.models.Models(self.http)
+        self.notifications = api.notifications.Notifications(self.http)
+        self.system = api.system.System(self.http)
+        self.users = api.users.Users(self.http)
 
     def configure(self, force_reload=False, colored_logs=True):
-        self.cfg = Config(force_reload=force_reload, colored_logs=colored_logs)
+        self.cfg = cfg.Config(force_reload=force_reload, colored_logs=colored_logs)
         logger.configure(self.cfg)
 
     def reload(self):

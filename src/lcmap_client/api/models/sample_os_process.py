@@ -1,13 +1,13 @@
 import logging
 
-from lcmap_client.models import base, url
+from lcmap_client.api import base, routes
 
 
 log = logging.getLogger(__name__)
-context = url.context + "/sample/os-process"
+context = routes.models_context + "/sample/os-process"
 
 
-class OSProcess(base.Sample):
+class OSProcess(base.APIComponent):
 
     def run(self, year, delay):
         return self.http.post(context, data={"year": year, "delay": delay})
