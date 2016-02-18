@@ -83,11 +83,12 @@ class PublicFunctionsTestCase(BaseTestCase):
         self.assertEqual(point, (0,0))
 
     def test_rod(self):
-        # XXX what's up with this test? it's just asserting that the rod is an
-        #     empty list -- if it's not implemented, let's dsiable the test
         (x, y) = (-1850865, 2956785)
         rod = [(t.acquired, t[x,y]) for t in self.tiles]
-        self.assertEqual([], rod)
+        self.assertEqual(
+            [('2014-08-07T00:00:00Z', 0.035099999113299418),
+             ('2014-08-23T00:00:00Z', 0.027199999312870204)],
+            rod)
 
 
 class PrivateFunctionsTestCase(BaseTestCase):
