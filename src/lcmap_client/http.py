@@ -13,22 +13,21 @@ The conveniences provided by the HTTP class include:
 import logging
 import sys
 
-from requests import Request, Session
-
-import lcmap_client
+from requests import Session
 
 
 log = logging.getLogger(__name__)
+
 default_endpoint = "http://localhost:8080"
 default_content_type = "json"
 vendor = "vnd.usgs.lcmap"
 project_url = "https://github.com/usgs-eros/lcmap-client-py"
 
 
-def get_user_agent ():
+def get_user_agent():
     from lcmap_client import __version__ as client_version
     return "LCMAP REST Client/{} (Python {}) (+{})".format(
-    client_version, sys.version.replace("\n", ""), project_url)
+        client_version, sys.version.replace("\n", ""), project_url)
 
 
 def split_media_type(media_type):
@@ -102,12 +101,12 @@ class HTTP(object):
 
     def request(self, method, path, **kwargs):
         url = self.base_url + path
-        #req = Request(*([method.upper(), url] + list(args)), **kwargs)
+        # req = Request(*([method.upper(), url] + list(args)), **kwargs)
         log.debug("kwargs: {}".format(kwargs))
         log.debug("Making request with headers {}...".format(self.session.headers))
         http_func = getattr(self.session, method.lower())
         raw_resp = http_func(url, **kwargs)
-        #raw_resp = self.session.send(req.prepare())
+        # raw_resp = self.session.send(req.prepare())
         errors = []
         if raw_resp:
             log.debug("Got raw response: {}".format(raw_resp))
@@ -134,7 +133,7 @@ class HTTP(object):
     def get(self, path, **kwargs):
         return self.request('GET', path, **kwargs)
 
-    def delete(self, path,**kwargs):
+    def delete(self, path, **kwargs):
         return self.request('DELETE', path, **kwargs)
 
     def get_body(self, raw_resp):

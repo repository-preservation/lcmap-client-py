@@ -5,3 +5,6 @@ gnureadline
 termcolor
 nose
 numpy
+gdal
+click
+pandas

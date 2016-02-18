@@ -5,14 +5,14 @@ obtained upon a successful login.
 """
 import logging
 
-import requests
-
-import lcmap_client
-from lcmap_client import url
+from lcmap_client.api import routes
 
 
 log = logging.getLogger(__name__)
-context = url.base_context + "/auth"
+
+context = routes.auth_context
+login_context = "/login"
+user_context = "/me"
 
 
 class Auth(dict):
@@ -30,7 +30,7 @@ class Auth(dict):
         if not password:
             password = self.cfg.get_password()
         result = self.http.post(
-            context + "/login",
+            login_context,
             data={"username": username, "password": password})
         if result.errors:
             log.error("Login unsuccessful: {}".format(result.errors))
