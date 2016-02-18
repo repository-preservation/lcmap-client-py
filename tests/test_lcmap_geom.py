@@ -1,7 +1,10 @@
+import json
 import unittest
 
-from lcmap_client import geom
-from lcmap_client.data import surface_reflectance
+from lcmap_fakes import FakeLCMAPHTTP, FakeLCMAPRESTResponse
+
+from lcmap_client import geom, serializer
+from lcmap_client.api.data import surface_reflectance
 
 
 if __name__ == '__main__':
@@ -18,15 +21,33 @@ class BaseTestCase(unittest.TestCase):
             't1':   '2013-01-01',
             't2':   '2015-01-01'
         }
-        # XXX instead of None, we need to pass a fake object that has a
-        #     callable "get" attribute on it (e.g., lambda) which returns
-        #     a FakeResponse - an object with a "result" attr that is a
-        #     dictionary and has a "spec" key and a "tiles" key that is a list
-        #     of fake payload data (e.g., a list containing one tile).
-        sr = surface_reflectance.SurfaceReflectance(None)
-        self.spec, self.tiles = sr.tiles(**params)
+        # Load the saved data that was originally returned by running the above
+        # query against the LCMAP REST service.
+        data = json.load(open("tests/data/tiles-result-payload.json"))
+        fake_resp = FakeLCMAPRESTResponse(data)
+        fake_http = FakeLCMAPHTTP(fake_resp)
+        sr = surface_reflectance.SurfaceReflectance(fake_http)
+        (self.spec, self.tiles) = sr.tiles(**params)
         self.tile = self.tiles[0]
         self.xform_matrix = geom.get_transform_matrix(self.tile, self.spec)
+
+
+class FakeObjectsTestCase(BaseTestCase):
+    "Make sure that all the bits are set up properly."
+
+    def test_spec(self):
+        self.assertEqual(self.spec["data_shape"], [256, 256])
+
+    def test_tiles(self):
+        self.assertEqual(len(self.tiles), 2)
+
+    def test_tile(self):
+        self.assertEqual(type(self.tile).__name__, "Tile")
+        self.assertEqual(self.tile.spec, self.spec)
+
+    def test_xform_matrix(self):
+        self.assertEqual(type(self.xform_matrix).__name__, "list")
+        self.assertEqual(self.xform_matrix[0], -1850865)
 
 
 class PublicFunctionsTestCase(BaseTestCase):
