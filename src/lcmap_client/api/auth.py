@@ -25,12 +25,14 @@ class Auth(dict):
 
     def login(self, username="", password=""):
         log.debug("Logging in ...")
+        log.debug("MEOW")
+        log.debug(login_context)
         if not username:
             username = self.cfg.get_username()
         if not password:
             password = self.cfg.get_password()
         result = self.http.post(
-            login_context,
+            context+login_context,
             data={"username": username, "password": password})
         if result.errors:
             log.error("Login unsuccessful: {}".format(result.errors))
