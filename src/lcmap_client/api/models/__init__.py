@@ -9,7 +9,8 @@ log = logging.getLogger(__name__)
 class Samples(base.APIComponent):
     "Class that holds all sample models."
     def initialize(self):
-        self.os_process = sample_os_process.OSProcess(self.http)
+        self.os_process = samples.OSProcess(self.http)
+        self.piped_processes = samples.PipedProcesses(self.http)
         # XXX Add os_piped_process & os_docker_process
 
 
