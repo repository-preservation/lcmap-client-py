@@ -44,7 +44,7 @@ class Client(object):
         self.http = http.HTTP(cfg=self.cfg)
         log.debug("\tSetting up primary components ...")
         self.auth = auth.Auth(cfg=self.cfg, http=self.http)
-        self.compatibility = api.compatibility.Compatibility(self.http)
+        self.compatibility = compatibility.Compatibility(self.http)
         self.data = data.Data(self.http)
         self.jobs = jobs.Jobs(self.http)
         self.models = models.Models(self.http)
