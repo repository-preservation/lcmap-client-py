@@ -5,7 +5,7 @@ obtained upon a successful login.
 """
 import logging
 
-from lcmap_client.api import routes
+from lcmap.client.api import routes
 
 
 log = logging.getLogger(__name__)

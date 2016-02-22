@@ -1,6 +1,6 @@
 import logging
 
-from lcmap_client.api import base, routes
+from lcmap.client.api import base, routes
 
 
 log = logging.getLogger(__name__)

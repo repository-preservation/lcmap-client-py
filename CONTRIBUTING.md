@@ -8,7 +8,7 @@ little bit helps, and credit will always be given.
 Bug reports
 ===========
 
-When `reporting a bug <https://github.com/usgs-eros/lcmap_client/issues>`_ please include:
+When `reporting a bug <https://github.com/usgs-eros/lcmap-client-py/issues>`_ please include:
 
     * Your operating system name and version.
     * Any details about your local setup that might be helpful in troubleshooting.
@@ -24,7 +24,7 @@ articles, and such.
 Feature requests and feedback
 =============================
 
-The best way to send feedback is to file an issue at https://github.com/usgs-eros/lcmap_client/issues.
+The best way to send feedback is to file an issue at https://github.com/usgs-eros/lcmap-client-py/issues.
 
 If you are proposing a feature:
 
@@ -35,12 +35,12 @@ If you are proposing a feature:
 Development
 ===========
 
-To set up `lcmap_client` for local development:
+To set up `lcmap-client-py` for local development:
 
-1. `Fork lcmap_client on GitHub <https://github.com/usgs-eros/lcmap_client/fork>`_.
+1. `Fork lcmap-client-py on GitHub <https://github.com/usgs-eros/lcmap-client-py/fork>`_.
 2. Clone your fork locally::
 
-    git clone git@github.com:your_name_here/lcmap_client.git
+    git clone git@github.com:your_name_here/lcmap-client-py.git
 
 3. Create a branch for local development::
 
@@ -68,15 +68,15 @@ If you need some code review or feedback while you're developing the code just m
 For merging, you should:
 
 1. Include passing tests (run ``tox``) [1]_.
-2. Update documentation when there's new API, functionality etc. 
+2. Update documentation when there's new API, functionality etc.
 3. Add a note to ``CHANGELOG.rst`` about the changes.
 4. Add yourself to ``AUTHORS.rst``.
 
-.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will 
-       `run the tests <https://travis-ci.org/usgs-eros/lcmap_client/pull_requests>`_ for each change you add in the pull request.
-       
+.. [1] If you don't have all the necessary python versions available locally you can rely on Travis - it will
+       `run the tests <https://travis-ci.org/usgs-eros/lcmap-client-py/pull_requests>`_ for each change you add in the pull request.
+
        It will be slower though ...
-       
+
 Tips
 ----
 

@@ -8,8 +8,8 @@ supporting components.
 """
 import logging
 
-from lcmap_client import cfg, http, logger
-from lcmap_client.api import (auth, compatibility, data, jobs, models,
+from lcmap.client import cfg, http, logger
+from lcmap.client.api import (auth, compatibility, data, jobs, models,
                               notifications, routes, system, users)
 
 

@@ -62,5 +62,5 @@ setup(
     },
     entry_points='''
         [console_scripts]
-        lcmap=lcmap_client.scripts.cl_tool.main:main
+        lcmap=lcmap.client.scripts.cl_tool.main:main
     ''')

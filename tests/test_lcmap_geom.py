@@ -3,8 +3,8 @@ import unittest
 
 from lcmap_fakes import FakeLCMAPHTTP, FakeLCMAPRESTResponse
 
-from lcmap_client import geom, serializer
-from lcmap_client.api.data import surface_reflectance
+from lcmap.client import geom, serializer
+from lcmap.client.api.data import surface_reflectance
 
 
 if __name__ == '__main__':

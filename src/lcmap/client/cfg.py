@@ -11,7 +11,7 @@ from six.moves.configparser import ConfigParser
 
 from pylru import lrudecorator
 
-from lcmap_client import logger
+from lcmap.client import logger
 
 
 log = logging.getLogger(__name__)

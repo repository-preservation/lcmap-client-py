@@ -1,7 +1,7 @@
 import logging
 
-from lcmap_client.api import base
-from lcmap_client.api.data.surface_reflectance import SurfaceReflectance
+from lcmap.client.api import base
+from lcmap.client.api.data.surface_reflectance import SurfaceReflectance
 
 
 log = logging.getLogger(__name__)

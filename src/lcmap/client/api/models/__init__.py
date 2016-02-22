@@ -1,7 +1,7 @@
 import logging
 
-from lcmap_client.api import base
-from lcmap_client.api.models import sample_os_process
+from lcmap.client.api import base
+from lcmap.client.api.models import samples
 
 log = logging.getLogger(__name__)
 

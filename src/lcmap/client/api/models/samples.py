@@ -1,6 +1,6 @@
 import logging
 
-from lcmap_client.api import base, routes
+from lcmap.client.api import base, routes
 
 
 log = logging.getLogger(__name__)
@@ -20,7 +20,10 @@ class PipedProcesses(base.APIComponent):
 
     context = sample_context + "/piped-processes"
 
-    def run(self, number, count, bytes, words, lines):
+    def run(self, number="", count="", bytes="", words="", lines=""):
         return self.http.post(self.context, data={
-            "number": number, "count": count, "bytes": bytes, "words": words,
-            "lines": lines})
+            "number": str(number).lower(),
+            "count": str(count).lower(),
+            "bytes": str(bytes).lower(),
+            "words": str(words).lower(),
+            "lines": str(lines).lower()})

@@ -5,8 +5,8 @@ import click
 
 import pandas as pd
 
-from lcmap_client import Client, serializer, util
-from lcmap_client.scripts.cl_tool.lcmap import lcmap
+from lcmap.client import Client, serializer, util
+from lcmap.client.scripts.cl_tool.lcmap import lcmap
 
 
 log = logging.getLogger(__name__)

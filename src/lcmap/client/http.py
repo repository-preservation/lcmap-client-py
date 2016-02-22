@@ -25,7 +25,7 @@ project_url = "https://github.com/usgs-eros/lcmap-client-py"
 
 
 def get_user_agent():
-    from lcmap_client import __version__ as client_version
+    from lcmap.client import __version__ as client_version
     return "LCMAP REST Client/{} (Python {}) (+{})".format(
         client_version, sys.version.replace("\n", ""), project_url)
 

@@ -1,7 +1,6 @@
 import unittest
 
-from lcmap_client import Client
-from lcmap_client import geom
+from lcmap.client import Client, geom
 
 
 if __name__ == '__main__':

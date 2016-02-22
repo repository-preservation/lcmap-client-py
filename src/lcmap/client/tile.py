@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import numpy.ma as ma
 
-from lcmap_client import geom
+from lcmap.client import geom
 
 
 log = logging.getLogger(__name__)

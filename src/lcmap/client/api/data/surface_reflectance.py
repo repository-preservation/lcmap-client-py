@@ -1,8 +1,8 @@
 import logging
 
 
-from lcmap_client import tile
-from lcmap_client.api import base, routes
+from lcmap.client import tile
+from lcmap.client.api import base, routes
 
 
 log = logging.getLogger(__name__)
