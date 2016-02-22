@@ -32,7 +32,7 @@ class Auth(dict):
         if not password:
             password = self.cfg.get_password()
         result = self.http.post(
-            context+login_context,
+            login_context,
             data={"username": username, "password": password})
         if result.errors:
             log.error("Login unsuccessful: {}".format(result.errors))
