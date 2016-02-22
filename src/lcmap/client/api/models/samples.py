@@ -13,7 +13,17 @@ class OSProcess(base.APIComponent):
     context = sample_context + "/os-process"
 
     def run(self, year, delay):
-        return self.http.post(self.context, data={"year": year, "delay": delay})
+        return self.http.post(
+            self.context, data={"year": year, "delay": delay})
+
+
+class DockerProcess(OSProcess):
+
+    context = sample_context + "/docker-process"
+
+    def run(self, year, docker_tag):
+        return self.http.post(
+            self.context, data={"year": year, "docker-tag": docker_tag})
 
 
 class PipedProcesses(base.APIComponent):
@@ -27,3 +37,4 @@ class PipedProcesses(base.APIComponent):
             "bytes": str(bytes).lower(),
             "words": str(words).lower(),
             "lines": str(lines).lower()})
+
