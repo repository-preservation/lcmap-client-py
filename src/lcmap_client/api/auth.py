@@ -11,8 +11,8 @@ from lcmap_client.api import routes
 log = logging.getLogger(__name__)
 
 context = routes.auth_context
-login_context = "/login"
-user_context = "/me"
+login_context = context + "/login"
+user_context = context + "/me"
 
 
 class Auth(dict):
