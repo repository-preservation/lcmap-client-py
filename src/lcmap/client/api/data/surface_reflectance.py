@@ -27,7 +27,7 @@ class SurfaceReflectance(base.APIComponent):
 
     def rod(self, band, x, y, t1, t2):
         "Get spec and rod for given band, point, x, y and times"
-        spec, tiles = self.tiles(band, x, y, t1, t2)
+        (spec, tiles) = self.tiles(band, x, y, t1, t2)
         ubid = spec['ubid']
         time_and_value = [
                 {'value': t[x, y],

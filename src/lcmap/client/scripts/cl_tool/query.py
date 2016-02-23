@@ -37,7 +37,7 @@ def rod(config, spectra, x, y, t1, t2):
     result = []
     for s in spectra:
         for b in util.get_spectra(s):
-            spec, rod = client.data.surface_reflectance.rod(b, x, y, t1, t2)
+            (spec, rod) = client.data.surface_reflectance.rod(b, x, y, t1, t2)
             for r in rod:
                 r['spectrum'] = s
             result.extend(rod)

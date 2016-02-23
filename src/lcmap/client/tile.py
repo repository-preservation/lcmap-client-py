@@ -84,6 +84,6 @@ class Tile(object):
         # XXX why isn't this next line using the self._point_transformer matrix
         #     that's areadly been created?
         tm = geom.get_transform_matrix(self, self._spec)  # blech
-        x, y = proj_point
-        tx, ty = geom.transform_coord(proj_point, tm, src="map", dst="image")
+        (x, y) = proj_point
+        (tx, ty) = geom.transform_coord(proj_point, tm, src="map", dst="image")
         return self._data[tx, ty]
