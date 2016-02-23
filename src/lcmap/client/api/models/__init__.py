@@ -1,7 +1,7 @@
 import logging
 
 from lcmap.client.api import base
-from lcmap.client.api.models import samples
+from lcmap.client.api.models import ccdc, samples
 
 
 log = logging.getLogger(__name__)
@@ -15,13 +15,17 @@ class Samples(base.APIComponent):
         self.piped_processes = samples.PipedProcesses(self.http)
 
 
-# XXX Currently a placeholder for CCDC; add iniitialize method to set it up
-class CCDCModel(base.APIComponent):
-    "The CCDC model."
+# XXX if we ever need to group multiple CCDC calls, we can do that here:
+# class CCDCModels(base.APIComponent):
+#     "The CCDC model."
+#     def initialize(self):
+#         self.ccdc = ccdc.CCDCPipedProcesses(self.http)
 
 
 class Models(base.APIComponent):
     "Class that holds all models, both sample models and actual models."
     def initialize(self):
         self.samples = Samples(self.http)
-        self.ccdc = CCDCModel(self.http)
+        # XXX for the prototype, we're uding piped processes running local to
+        # the REST server -- post-prototype, CCDC will run upon Mesos
+        self.ccdc = ccdc.CCDCPipedProcesses(self.http)
