@@ -59,7 +59,7 @@ def ccdc(config, spectra, x, y, t1, t2, mask, shape, unscale, format,
          verbose],
         stdin=stdin,
         stdout=subprocess.PIPE)
-    ccdc_results = p2.communicate()[0]
+    ccdc_results = p.communicate()[0]
     if stdout:
         print(ccdc_results)
     else:
