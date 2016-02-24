@@ -50,16 +50,20 @@ def query(config):
 @click.option('--t1')
 @click.option('--t2')
 @click.option('--format', default="plain-text", type=format_choices)
-def rod(config, spectra, x, y, t1, t2, json):
+@click.option('--mask/--no-mask', is_flag=True, default=True)
+@click.option('--shape/--no-shape', is_flag=True, default=True)
+@click.option('--unscale/--scale', is_flag=True, default=True)
+def rod(config, spectra, x, y, t1, t2, mask, shape, unscale, format):
     client = Client()
 
     if not spectra:
-        print(spectra_names)
+        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2','tirs-1','cf']
 
     result = []
     for s in spectra:
         for b in util.get_spectra(s):
-            (spec, rod) = client.data.surface_reflectance.rod(b, x, y, t1, t2)
+            (spec, rod) = client.data.surface_reflectance.rod(
+                b, x, y, t1, t2, mask, shape, unscale)
             for r in rod:
                 r['spectrum'] = s
             result.extend(rod)
