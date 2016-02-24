@@ -3,7 +3,5 @@ requests
 pylru
 termcolor
 nose
-numpy
 click
-pandas
 DateTime

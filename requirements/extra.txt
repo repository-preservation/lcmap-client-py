@@ -1,2 +1,4 @@
 gnureadline
 gdal
+numpy
+pandas
