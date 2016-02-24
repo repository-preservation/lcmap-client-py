@@ -56,7 +56,7 @@ setup(
     keywords=[
         # eg: "keyword1", "keyword2", "keyword3",
     ],
-    install_requires=get_install_reqs("requirements.txt"),
+    install_requires=get_install_reqs("requirements/base.txt"),
     extras_require={
         # eg: 'rst': ["docutils>=0.11"],
     },

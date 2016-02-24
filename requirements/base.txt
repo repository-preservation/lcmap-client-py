@@ -1,11 +1,9 @@
 six
 requests
 pylru
-gnureadline
 termcolor
 nose
 numpy
-gdal
 click
 pandas
 DateTime
