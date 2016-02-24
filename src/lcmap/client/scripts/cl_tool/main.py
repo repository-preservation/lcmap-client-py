@@ -6,8 +6,9 @@ The main module for the lcmap command-line tool serves two important functions:
    functions to be properly decorated before getting called in `main()`.
 """
 # flake8: noqa
-from lcmap.client.scripts.cl_tool import (job, lcmap, model, monitor, query,
-                                          system)
+from lcmap.client.scripts.cl_tool import job, model, monitor, query, system
+
 
 def main():
-    lcmap.lcmap()
+    from lcmap.client.scripts.cl_tool import command
+    command.lcmap()

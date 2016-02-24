@@ -35,6 +35,7 @@ setup(
     url="https://github.com/usgs-eros/lcmap-client-py",
     packages=find_packages("src"),
     package_dir={"": "src"},
+    namespace_packages = ["lcmap"],
     py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
     include_package_data=True,
     zip_safe=False,

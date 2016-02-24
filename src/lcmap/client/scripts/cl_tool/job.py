@@ -1,6 +1,6 @@
 import click
 
-from lcmap.client.scripts.cl_tool.lcmap import lcmap
+from lcmap.client.scripts.cl_tool.command import lcmap
 
 
 @lcmap.group()
