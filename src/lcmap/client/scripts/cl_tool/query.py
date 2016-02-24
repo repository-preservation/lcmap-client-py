@@ -35,7 +35,7 @@ def rod(config, spectra, x, y, t1, t2, mask, shape, unscale):
     client = Client()
 
     if not spectra:
-        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2,''tirs-1','cf']
+        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2','tirs-1','cf']
 
     result = []
     for s in spectra:
