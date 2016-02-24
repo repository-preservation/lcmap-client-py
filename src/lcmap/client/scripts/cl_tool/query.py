@@ -43,18 +43,8 @@ def query(config):
     "Run data queries against the LCMAP Data Warehouse."
 
 
-@query.command()
-@click.pass_obj
-@click.option('--spectra', '-s', multiple=True, type=spectra_choices)
-@click.option('--x', '-x', type=int)
-@click.option('--y', '-y', type=int)
-@click.option('--t1')
-@click.option('--t2')
-@click.option('--format', default="plain-text", type=format_choices)
-@click.option('--mask/--no-mask', is_flag=True, default=True)
-@click.option('--shape/--no-shape', is_flag=True, default=True)
-@click.option('--unscale/--scale', is_flag=True, default=True)
-def rod(config, spectra, x, y, t1, t2, mask, shape, unscale, format):
+# XXX probaly want to move this into the client-proper, and just import it here
+def rod_query(spectra, x, y, t1, t2, mask, shape, unscale, format):
     client = Client()
     result = []
 
@@ -75,8 +65,24 @@ def rod(config, spectra, x, y, t1, t2, mask, shape, unscale, format):
     pdf = df.pivot(index='source', columns='spectrum')
     adf = pdf['acquired'].iloc[:, 0]
     vdf = pdf['value'].loc[:, spectra]
-    combined = list(zip(adf.values, vdf.values))
-    if format == "plain-text":
-        print(parse_to_text(combined))
-    elif format == "json":
-        print(parse_to_json(combined))
+    return list(zip(adf.values, vdf.values))
+
+
+@query.command()
+@click.pass_obj
+@click.option('--spectra', '-s', multiple=True, type=spectra_choices)
+@click.option('--x', '-x', type=int)
+@click.option('--y', '-y', type=int)
+@click.option('--t1')
+@click.option('--t2')
+@click.option('--mask/--no-mask', is_flag=True, default=True)
+@click.option('--shape/--no-shape', is_flag=True, default=True)
+@click.option('--unscale/--scale', is_flag=True, default=True)
+@click.option('--format', default="plain-text", type=format_choices)
+@click.option('--stdout', is_flag=True, default=True)
+def rod(config, spectra, x, y, t1, t2, mask, shape, unscale, format, stdout):
+    results = rod_query(spectra, x, y, t1, t2, mask, shape, unscale, format)
+    if stdout:
+        print(results)
+    else:
+        return results

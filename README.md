@@ -38,8 +38,17 @@ $ tox -e py34-shell
 
 ## CLI Tools
 
+Run a query:
+
 ```bash
 $  lcmap query rod --x -1789425 --y 3073665 --t1 2010-01-01 --t2 2015-01-01
+```
+
+Execute the same query against the CCDC model:
+
+```bash
+$  lcmap model ccdc --x -1789425 --y 3073665 --t1 2010-01-01 --t2 2015-01-01 \
+        --row=2241 --col=1231 --out-dir="stdout" --scene-list="stdin"
 ```
 
 To see what's available:
