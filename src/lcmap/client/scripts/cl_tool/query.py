@@ -28,7 +28,7 @@ def parse_to_text(results):
         julian = str(DateTime(timestamp).JulianDay())
         str_data = field_sep.join([str(x) for x in data])
         if nil_value not in str_data:
-            str_results.append(julian + str_data)
+            str_results.append(julian + field_sep + str_data)
     return record_sep.join(str_results)
 
 
