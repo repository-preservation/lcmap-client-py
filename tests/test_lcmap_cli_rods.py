@@ -8,11 +8,8 @@ from lcmap.client.scripts.cl_tool import query
 class RodResultTestCase(unittest.TestCase):
 
     def setUp(self):
-        try:
-            fh = open("tests/data/cli-rod-results.pkl", "rb")
-            self.results = pickle.load(fh)
-        finally:
-            fh.close()
+        with open("tests/data/cli-rod-results.pkl", "rb") as data:
+            self.results = pickle.load(data)
 
     def test_parse_as_text(self):
         with open("tests/data/cli-rod-results.txt", "r") as expected:
@@ -23,11 +20,8 @@ class RodResultTestCase(unittest.TestCase):
 class RodResult3YearsTestCase(unittest.TestCase):
 
     def setUp(self):
-        try:
-            fh = open("tests/data/cli-rod-3yrs-results.pkl", "rb")
-            self.results = pickle.load(fh)
-        finally:
-            fh.close()
+        with open("tests/data/cli-rod-3yrs-results.pkl", "rb") as data:
+            self.results = pickle.load(data)
 
     def test_parse_as_text(self):
         with open("tests/data/cli-rod-3yrs-results.txt", "r") as expected:
