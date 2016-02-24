@@ -55,11 +55,11 @@ def query(config):
 @click.option('--unscale/--scale', is_flag=True, default=True)
 def rod(config, spectra, x, y, t1, t2, mask, shape, unscale, format):
     client = Client()
+    result = []
 
     if not spectra:
-        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2','tirs-1','cf']
+        spectra = spectra_names
 
-    result = []
     for s in spectra:
         for b in util.get_spectra(s):
             (spec, rod) = client.data.surface_reflectance.rod(
