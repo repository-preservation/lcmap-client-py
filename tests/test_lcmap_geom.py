@@ -7,10 +7,6 @@ from lcmap.client import geom, serializer
 from lcmap.client.api.data import surface_reflectance
 
 
-if __name__ == '__main__':
-    unittest.main()
-
-
 class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -117,3 +113,7 @@ class PrivateFunctionsTestCase(BaseTestCase):
         (px, py)  = (-1850865+2, 2956785-2)
         point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
         self.assertEqual(point, (0,0))
+
+
+if __name__ == '__main__':
+    unittest.main()

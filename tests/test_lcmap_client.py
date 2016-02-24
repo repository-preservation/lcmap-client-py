@@ -3,10 +3,6 @@ import unittest
 from lcmap.client import Client, geom
 
 
-if __name__ == '__main__':
-    unittest.main()
-
-
 class ClientTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -20,9 +16,6 @@ class ClientTestCase(unittest.TestCase):
         }
         self.spec, self.tiles = self.client.data.surface_reflectance.tiles(**self.params)
         self.tile = self.tiles[0]
-
-    def tearDown(self):
-        pass
 
     def test_init(self):
         self.assertIsNotNone(self.client)
@@ -50,3 +43,7 @@ class ClientTestCase(unittest.TestCase):
         px,py = -1850865+(30*128), 2956785-(30*128)
         tx,ty = 128, 128
         self.assertEqual(self.tile[px,py], self.tile.data[tx,ty])
+
+
+if __name__ == '__main__':
+    unittest.main()
