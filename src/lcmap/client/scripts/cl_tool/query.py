@@ -1,6 +1,8 @@
 import json
 import logging
 
+from DateTime import DateTime
+
 import click
 
 import pandas as pd
@@ -13,6 +15,25 @@ log = logging.getLogger(__name__)
 
 spectra_names = util.get_spectra()
 spectra_choices = click.Choice(spectra_names)
+format_options = ["plain-text", "json"]
+format_choices = click.Choice(format_options)
+
+
+def parse_to_text(results):
+    str_results = []
+    nil_value = "--"
+    field_sep = " "
+    record_sep = "\n"
+    for (timestamp, data) in results:
+        julian = str(DateTime(timestamp).JulianDay())
+        str_data = field_sep.join([str(x) for x in data])
+        if nil_value not in str_data:
+            str_results.append(julian + str_data)
+    return record_sep.join(str_results)
+
+
+def parse_to_json(results):
+    return json.dumps(combined, indent=4, cls=serializer.NumpyEncoder)
 
 
 @lcmap.group()
@@ -28,7 +49,8 @@ def query(config):
 @click.option('--y', '-y', type=int)
 @click.option('--t1')
 @click.option('--t2')
-def rod(config, spectra, x, y, t1, t2):
+@click.option('--format', default="plain-text", type=format_choices)
+def rod(config, spectra, x, y, t1, t2, json):
     client = Client()
 
     if not spectra:
@@ -49,4 +71,7 @@ def rod(config, spectra, x, y, t1, t2):
     adf = pdf['acquired'].iloc[:, 0]
     vdf = pdf['value'].loc[:, spectra]
     combined = list(zip(adf.values, vdf.values))
-    print(json.dumps(combined, indent=4, cls=serializer.NumpyEncoder))
+    if format == "plain-text":
+        print(parse_to_text(combined))
+    elif format == "json":
+        print(parse_to_json(combined))
