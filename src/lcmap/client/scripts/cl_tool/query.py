@@ -28,16 +28,19 @@ def query(config):
 @click.option('--y', '-y', type=int)
 @click.option('--t1')
 @click.option('--t2')
-def rod(config, spectra, x, y, t1, t2):
+@click.option('--mask/--no-mask', is_flag=True, default=True)
+@click.option('--shape/--no-shape', is_flag=True, default=True)
+@click.option('--unscale/--scale', is_flag=True, default=True)
+def rod(config, spectra, x, y, t1, t2, mask, shape, unscale):
     client = Client()
 
     if not spectra:
-        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2','tirs-1','cf']
+        spectra = ['blue', 'green', 'red','ir','swir-1','swir-2,''tirs-1','cf']
 
     result = []
     for s in spectra:
         for b in util.get_spectra(s):
-            (spec, rod) = client.data.surface_reflectance.rod(b, x, y, t1, t2)
+            (spec, rod) = client.data.surface_reflectance.rod(b, x, y, t1, t2, mask, shape, unscale)
             for r in rod:
                 r['spectrum'] = s
             result.extend(rod)
@@ -49,4 +52,5 @@ def rod(config, spectra, x, y, t1, t2):
     adf = pdf['acquired'].iloc[:, 0]
     vdf = pdf['value'].loc[:, spectra]
     combined = list(zip(adf.values, vdf.values))
+    fh = open("meow-is-not-a-file-name","w")
     print(json.dumps(combined, indent=4, cls=serializer.NumpyEncoder))

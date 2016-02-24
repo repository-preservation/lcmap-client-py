@@ -16,7 +16,7 @@ gdal_numpy_mapping = {
 }
 
 
-def decode(spec, result):
+def decode(spec, result, mask = True, shape = True, unscale = True):
     """Create masked numpy array from the encoded data in a tile query's HTTP
     results."""
     t = gdal_numpy_mapping[spec['data_type']]
@@ -25,17 +25,17 @@ def decode(spec, result):
 
     log.debug("decoding {ubid}:{x},{y}".format(**result))
 
-    if spec['data_fill']:
+    if mask and spec['data_fill']:
         log.debug("masking fill: {}".format(spec['data_fill']))
         a = ma.masked_equal(a, spec['data_fill'])
-    if spec['data_range']:
+    if mask and spec['data_range']:
         v1, v2 = result['data_range']
         log.debug("masking range: {}".format(spec['data_range']))
         a = ma.masked_outside(a, v1, v2)
-    if spec['data_shape']:
+    if shape and spec['data_shape']:
         log.debug("shaping: {}".format(spec['data_shape']))
         a = a.reshape(spec['data_shape'])
-    if spec['data_scale']:
+    if unscale and spec['data_scale']:
         log.debug("scaling: {}".format(spec['data_scale']))
         a = a * spec['data_scale']
 
@@ -44,10 +44,10 @@ def decode(spec, result):
 
 class Tile(object):
 
-    def __init__(self, tile, spec):
+    def __init__(self, tile, spec, mask = True, shape = True, unscale = True):
         self._tile = tile
         self._spec = spec
-        self._data = decode(spec, tile)
+        self._data = decode(spec, tile, mask, shape, unscale)
         self._point_transformer = geom.get_transform_matrix(self, spec)
         pass
 
