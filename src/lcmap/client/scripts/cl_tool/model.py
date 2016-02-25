@@ -52,10 +52,10 @@ def ccdc(config, spectra, x, y, t1, t2, mask, shape, unscale, format,
 
     p = subprocess.Popen(
         ["ccdc",
-         "--row=" + row
-         "--col=" + col
-         "--outDir" + out_dir
-         "--sceneList" + scene_list
+         "--row=" + row,
+         "--col=" + col,
+         "--outDir" + out_dir,
+         "--sceneList" + scene_list,
          verbose],
         stdin=stdin,
         stdout=subprocess.PIPE)
