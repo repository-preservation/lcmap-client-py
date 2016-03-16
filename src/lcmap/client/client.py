@@ -38,6 +38,14 @@ class Client(object):
         self.initialize(force_reload=force_reload, colored_logs=colored_logs)
 
     def initialize(self, force_reload=False, colored_logs=True):
+        """Set up the client components.
+        
+        This is provided as a separate method from the __init__ used for object
+        instantiation in order to reload client components (as necessary) in
+        interactive sessions without having to reinstantiate the client object itself.
+        Right now, the amount of work done in __init__ is small, but this will
+        likely change, adding more value to the chossen approach.
+        """
         log.debug("Initializing client components ...")
         log.debug("\tSetting up supporting components ...")
         self.configure(force_reload=force_reload, colored_logs=colored_logs)
