@@ -53,7 +53,7 @@ def rod_query(spectra, x, y, t1, t2, mask, shape, unscale, format):
 
     for s in spectra:
         for b in util.get_spectra(s):
-            (spec, rod) = client.data.surface_reflectance.rod(
+            (spec, rod) = client.data.rod(
                 b, x, y, t1, t2, mask, shape, unscale)
             for r in rod:
                 r['spectrum'] = s
