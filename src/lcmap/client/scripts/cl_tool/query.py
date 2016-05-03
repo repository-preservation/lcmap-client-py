@@ -7,8 +7,7 @@ import click
 
 import pandas as pd
 
-from lcmap.client import serializer, util
-from lcmap.client.client import Client
+from lcmap.client import serializer, util, Client
 from lcmap.client.scripts.cl_tool.command import lcmap
 
 
