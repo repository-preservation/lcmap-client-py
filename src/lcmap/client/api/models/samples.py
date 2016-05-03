@@ -37,4 +37,3 @@ class PipedProcesses(base.APIComponent):
             "bytes": str(bytes).lower(),
             "words": str(words).lower(),
             "lines": str(lines).lower()})
-

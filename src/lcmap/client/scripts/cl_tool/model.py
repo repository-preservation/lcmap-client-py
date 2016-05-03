@@ -1,3 +1,4 @@
+import io
 import logging
 import subprocess
 import sys
@@ -39,10 +40,10 @@ def model(config):
 @click.option('--local', is_flag=True, default=False)
 @click.option('--stdout', is_flag=True, default=True)
 def ccdc(config, spectra, x, y, t1, t2, mask, shape, unscale, format,
-    row, col, out_dir, scene_list, verbose, local, stdout):
-    if local == False:
+         row, col, out_dir, scene_list, verbose, local, stdout):
+    if local is False:
         print("Renmote execution of models not yet supported.")
-        sys,exit(1)
+        sys.exit(1)
     if verbose:
         verbose = "--verbose"
     query_results = query.rod_query(

@@ -34,7 +34,7 @@ def parse_to_text(results):
 
 
 def parse_to_json(results):
-    return json.dumps(combined, indent=4, cls=serializer.NumpyEncoder)
+    return json.dumps(results, indent=4, cls=serializer.NumpyEncoder)
 
 
 @lcmap.group()
