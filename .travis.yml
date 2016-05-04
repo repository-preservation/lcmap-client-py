@@ -5,20 +5,15 @@ env:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
   matrix:
-    - TOXENV=py26,coveralls
-    - TOXENV=py27,coveralls
-    - TOXENV=py33,coveralls
-    - TOXENV=py34,coveralls
-    - TOXENV=pypy,coveralls
-    - TOXENV=py26-nocover
-    - TOXENV=py27-nocover
-    - TOXENV=py33-nocover
-    - TOXENV=py34-nocover
-    - TOXENV=pypy-nocover
+    - TOXENV=py27
+    - TOXENV=py34
+    - TOXENV=py35
 before_install:
   - python --version
   - uname -a
   - lsb_release -a
+  - sudo apt-get install -y python-gdal python-numpy python-pandas
+  - sudo apt-get install -y python3-gdal python3-numpy python3-pandas
 install:
   - pip install tox
 script:
