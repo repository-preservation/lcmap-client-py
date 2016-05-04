@@ -20,7 +20,7 @@ install:
   - pip install --upgrade setuptools
   - pip install tox
   - pip install tox-travis
-  - retry pip install --timeout=60 --no-index --trusted-host $WHEELHOST --find-links $WHEELHOUSE numpy==1.6 pandas
+  - pip install --timeout=30 --no-index --trusted-host $WHEELHOST --find-links $WHEELHOUSE numpy==1.6 pandas || pip install numpy==1.6 pandas
 before_script:
   - tests/support/setup_deps.sh
 script:
