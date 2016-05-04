@@ -17,7 +17,7 @@ before_install:
 install:
   - pip install tox
 before_script:
-  - 
+  - test/support/setup_deps.sh
 script:
   - tox -v
 notifications:
