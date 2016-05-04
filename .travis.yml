@@ -12,8 +12,8 @@ before_install:
   - python --version
   - uname -a
   - lsb_release -a
-  - sudo apt-get install -y python-gdal python-numpy python-pandas
-  - sudo apt-get install -y python3-gdal python3-numpy python3-pandas
+  #- sudo apt-get install -y python-gdal python-numpy python-pandas
+  #- sudo apt-get install -y python3-gdal python3-numpy python3-pandas
 install:
   - pip install tox
 script:
@@ -22,3 +22,12 @@ notifications:
   email:
     on_success: never
     on_failure: always
+addons:
+  apt:
+    sources:
+      - python-gdal
+      - python-numpy
+      - python-pandas
+      - python3-gdal
+      - python3-numpy
+      - python3-pandas
