@@ -12,10 +12,11 @@ before_install:
   - python --version
   - uname -a
   - lsb_release -a
-  - sudo apt-get install -y python-gdal python-numpy python-pandas
-  - sudo apt-get install -y python3-gdal python3-numpy python3-pandas
+  - sudo apt-get install -y python-gdal python-numpy python-pandas python-virtualenv
+  - sudo apt-get install -y python3-gdal python3-numpy python3-virtualenv
 install:
   - pip install tox
+  - pip install pandas
 before_script:
   - test/support/setup_deps.sh
 script:
