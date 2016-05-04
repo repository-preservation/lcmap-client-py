@@ -10,12 +10,16 @@ before_install:
   - python --version
   - uname -a
   - lsb_release -a
-  - sudo apt-get install -y python-gdal python-numpy python-pandas python-virtualenv
-  - sudo apt-get install -y python3-gdal python3-numpy
+  - sudo apt-get install -y python-gdal python-virtualenv
+  - sudo apt-get install -y python3-gdal
 install:
+  - pip install --upgrade pip
+  - pip install --upgrade wheel
+  - pip install --upgrade setuptools
   - pip install tox
   - pip install tox-travis
   - pip install pandas
+  - wheelhouse_pip_install numpy==1.6 pandas
 before_script:
   - tests/support/setup_deps.sh
 script:
