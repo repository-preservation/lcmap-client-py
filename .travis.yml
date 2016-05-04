@@ -7,7 +7,6 @@ env:
   matrix:
     - TOXENV=py27
     - TOXENV=py34
-    - TOXENV=py35
 before_install:
   - python --version
   - uname -a
