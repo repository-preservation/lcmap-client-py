@@ -39,7 +39,7 @@ class Client(object):
 
     def initialize(self, force_reload=False, colored_logs=True):
         """Set up the client components.
-        
+
         This is provided as a separate method from the __init__ used for object
         instantiation in order to reload client components (as necessary) in
         interactive sessions without having to reinstantiate the client object itself.
