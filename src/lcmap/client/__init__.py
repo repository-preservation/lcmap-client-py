@@ -16,7 +16,7 @@ from .api import (auth, compatibility, data, jobs, models,
                   notifications, routes, system, users)
 
 
-__version__ = "0.0.1"
+__version__ = "0.5.0-dev"
 
 log = logging.getLogger(__name__)
 
