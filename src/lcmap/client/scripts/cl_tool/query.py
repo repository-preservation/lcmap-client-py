@@ -7,8 +7,7 @@ import click
 
 import pandas as pd
 
-from lcmap.client import serializer, util
-from lcmap.client.client import Client
+from lcmap.client import serializer, util, Client
 from lcmap.client.scripts.cl_tool.command import lcmap
 
 
@@ -34,7 +33,7 @@ def parse_to_text(results):
 
 
 def parse_to_json(results):
-    return json.dumps(combined, indent=4, cls=serializer.NumpyEncoder)
+    return json.dumps(results, indent=4, cls=serializer.NumpyEncoder)
 
 
 @lcmap.group()
@@ -53,7 +52,7 @@ def rod_query(spectra, x, y, t1, t2, mask, shape, unscale, format):
 
     for s in spectra:
         for b in util.get_spectra(s):
-            (spec, rod) = client.data.surface_reflectance.rod(
+            (spec, rod) = client.data.rod(
                 b, x, y, t1, t2, mask, shape, unscale)
             for r in rod:
                 r['spectrum'] = s

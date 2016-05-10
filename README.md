@@ -1,6 +1,6 @@
-# lcmap-client-py
+# lcmap-client-py  [![Build Status][travis-badge]][travis][![PyPI Project][pypi-badge]][pypi]
 
-LCMAP REST Service Client for Python
+*LCMAP REST Service Client for Python*
 
 [Very WIP ... not ready for use]
 
@@ -72,6 +72,19 @@ TBD
 
 ## License
 
+```
 Copyright © 2015 United States Government
 
 NASA Open Source Agreement, Version 1.3.
+```
+
+<!-- Named page links below: /-->
+
+[travis]: https://travis-ci.org/USGS-EROS/lcmap-client-py
+[travis-badge]: https://travis-ci.org/USGS-EROS/lcmap-client-py.png?branch=master
+[lcmap-logo]: resources/images/lcmap-logo-1-250px.png
+[lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
+[pypi]: https://pypi.python.org/pypi/lcmap-client
+[pypi-badge]: https://img.shields.io/pypi/v/lcmap-client.svg?maxAge=2592000
+
+

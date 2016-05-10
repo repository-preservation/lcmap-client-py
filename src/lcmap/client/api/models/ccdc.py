@@ -5,8 +5,10 @@ from lcmap.client.api import base, routes
 
 log = logging.getLogger(__name__)
 
-#context = routes.models_context + "/ccdc"
+
+# context = routes.models_context + "/ccdc"
 context = routes.models_context + "/ccdc/piped-processes"
+
 
 class CCDCPipedProcesses(base.APIComponent):
 
@@ -24,4 +26,3 @@ class CCDCPipedProcesses(base.APIComponent):
             "out-dir": out_dir,
             "scene-list": scene_list,
             "verbose": verbose})
-

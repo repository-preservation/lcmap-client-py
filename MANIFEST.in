@@ -4,6 +4,8 @@ graft tests
 include CONTRIBUTING.md
 include LICENSE
 include README.md
+include Makefile
+recursive-include requirements *.txt
 
 include tox.ini .travis.yml
 

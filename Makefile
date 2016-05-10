@@ -9,3 +9,12 @@ clean:
 
 install:
 	pip install -U .
+
+shell:
+	tox -e py27-shell
+
+shell-34:
+	tox -e py34-shell
+
+check:
+	tox

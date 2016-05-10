@@ -1,26 +1,28 @@
 language: python
-python: 2.7
-sudo: false
+python:
+  - "2.7"
+  - "3.4"
+sudo: required
 env:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
-  matrix:
-    - TOXENV=py26,coveralls
-    - TOXENV=py27,coveralls
-    - TOXENV=py33,coveralls
-    - TOXENV=py34,coveralls
-    - TOXENV=pypy,coveralls
-    - TOXENV=py26-nocover
-    - TOXENV=py27-nocover
-    - TOXENV=py33-nocover
-    - TOXENV=py34-nocover
-    - TOXENV=pypy-nocover
+    WHEELHOST=travis-wheels.scikit-image.org
+    WHEELHOUSE="http://travis-wheels.scikit-image.org
 before_install:
   - python --version
   - uname -a
   - lsb_release -a
+  - sudo apt-get install -y python-gdal python-virtualenv
+  - sudo apt-get install -y python3-gdal
 install:
+  - pip install --upgrade pip
+  - pip install --upgrade wheel
+  - pip install --upgrade setuptools
   - pip install tox
+  - pip install tox-travis
+  - pip install --timeout=30 --no-index --trusted-host $WHEELHOST --find-links $WHEELHOUSE numpy==1.6 pandas || pip install numpy==1.6 pandas
+before_script:
+  - tests/support/setup_deps.sh
 script:
   - tox -v
 notifications:

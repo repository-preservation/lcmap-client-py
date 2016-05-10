@@ -16,7 +16,7 @@ gdal_numpy_mapping = {
 }
 
 
-def decode(spec, result, mask = True, shape = True, unscale = True):
+def decode(spec, result, mask=True, shape=True, unscale=True):
     """Create masked numpy array from the encoded data in a tile query's HTTP
     results."""
     t = gdal_numpy_mapping[spec['data_type']]
@@ -44,7 +44,7 @@ def decode(spec, result, mask = True, shape = True, unscale = True):
 
 class Tile(object):
 
-    def __init__(self, tile, spec, mask = True, shape = True, unscale = True):
+    def __init__(self, tile, spec, mask=True, shape=True, unscale=True):
         self._tile = tile
         self._spec = spec
         self._data = decode(spec, tile, mask, shape, unscale)
