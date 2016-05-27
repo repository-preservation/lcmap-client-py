@@ -52,7 +52,7 @@ class Config:
         self.load()
 
     # Configuration accessors
-    def get(self, section="LCMAP Client", key=None):
+    def get(self, section="lcmap.client", key=None):
         env = get_env(key)
         if env:
             return env
