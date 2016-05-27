@@ -26,7 +26,7 @@ def get_install_reqs(req_file):
 
 setup(
     name="lcmap-client",
-    version="0.0.1",
+    version="0.5.0",
     license="BSD",
     description="LCMAP REST Service Client (Python)",
     long_description="%s" % read("README.md"),
