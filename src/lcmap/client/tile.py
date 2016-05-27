@@ -29,7 +29,7 @@ def decode(spec, result, mask=True, shape=True, unscale=True):
         log.debug("masking fill: {}".format(spec['data_fill']))
         a = ma.masked_equal(a, spec['data_fill'])
     if mask and spec['data_range']:
-        v1, v2 = result['data_range']
+        v1, v2 = spec['data_range']
         log.debug("masking range: {}".format(spec['data_range']))
         a = ma.masked_outside(a, v1, v2)
     if shape and spec['data_shape']:
