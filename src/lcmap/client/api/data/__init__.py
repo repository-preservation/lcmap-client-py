@@ -33,3 +33,7 @@ class Data(base.APIComponent):
                  'acquired': t.acquired,
                  'source': t.source, 'ubid':ubid} for t in tiles]
         return (spec, time_and_value)
+
+    def save(self, tile):
+        resp = self.http.post(context, json = tile)
+        return resp
