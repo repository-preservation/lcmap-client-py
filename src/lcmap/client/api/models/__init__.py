@@ -1,7 +1,7 @@
 import logging
 
 from lcmap.client.api import base
-from lcmap.client.api.models import ccdc, samples
+from lcmap.client.api.models import ccdc, samples, ndvi
 
 
 log = logging.getLogger(__name__)
@@ -29,3 +29,5 @@ class Models(base.APIComponent):
         # XXX for the prototype, we're uding piped processes running local to
         # the REST server -- post-prototype, CCDC will run upon Mesos
         self.ccdc = ccdc.CCDCPipedProcesses(self.http)
+        #
+        self.ndvi = ndvi.NDVI(self.http)
