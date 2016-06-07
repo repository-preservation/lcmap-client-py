@@ -37,3 +37,17 @@ class Data(base.APIComponent):
     def save(self, tile):
         resp = self.http.post(context, json = tile)
         return resp
+
+    def specs(self, band):
+        ""
+        path = routes.data_context + "/specs"
+        params = {"band": band}
+        response = self.http.get(path, params=params)
+        return response.result
+
+    def scenes(self, scene_id):
+        ""
+        path = routes.data_context + "/scenes"
+        params = {"scene": scene_id}
+        response = self.http.get(path, params=params)
+        return response.result
