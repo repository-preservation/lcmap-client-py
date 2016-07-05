@@ -1,28 +1,16 @@
 # -*- encoding: utf-8 -*-
 import glob
-import io
 import re
+import io
 from os.path import basename
-from os.path import dirname
-from os.path import join
 from os.path import splitext
 
 from setuptools import find_packages
 from setuptools import setup
 
-from pip.req import parse_requirements
-
-
-def read(*names, **kwargs):
-    return io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get("encoding", "utf8")
-    ).read()
-
-
-def get_install_reqs(req_file):
-    [str(req_data.req) for req_data in parse_requirements(req_file, session=False)]
-
+def read(filename, codec='utf-8'):
+    with io.open(filename, encoding=codec) as handle:
+        return handle.read()
 
 setup(
     name="lcmap-client",
@@ -36,7 +24,11 @@ setup(
     packages=find_packages("src"),
     package_dir={"": "src"},
     namespace_packages = ["lcmap"],
+
+    # py_modules is an alternative way to look for what's included.
+    # packages should handle it.  WIP
     py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
+
     include_package_data=True,
     zip_safe=False,
     classifiers=[
@@ -57,9 +49,8 @@ setup(
     keywords=[
         # eg: "keyword1", "keyword2", "keyword3",
     ],
-    #install_requires=get_install_reqs("requirements/base.txt"),
-    install_requires=['six','requests', 'pylru','termcolor','nose',
-                      'click','DateTime', 'pygdal>=1.11.4,<=1.11.4.999',
+    install_requires=['six', 'requests', 'pylru', 'termcolor', 'nose',
+                      'click', 'DateTime', 'pygdal>=1.11.4,<=1.11.4.999',
                       'pandas'
     ],
     extras_require={
