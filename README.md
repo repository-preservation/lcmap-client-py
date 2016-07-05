@@ -22,9 +22,14 @@ Ubuntu 16.04:
   - 
 
 ## Installing
+```bash
 $ pip install lcmap_client
+```
 
-If /tmp is mounted noexec: $ pip install -b some_dir lcmap_client
+If /tmp is mounted noexec: 
+```bash
+$ pip install -b some_dir lcmap_client
+```
 
 ## Configuration
 
