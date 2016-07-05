@@ -4,6 +4,27 @@
 
 [Very WIP ... not ready for use]
 
+## System Requirements
+Centos 7:
+  - python-pip
+  - gcc-gfortran
+  - gcc-c++
+  - python-devel
+  - gdal-devel
+  - gdal
+
+Ubuntu 16.04:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+
+## Installing
+$ pip install lcmap_client
+
+If /tmp is mounted noexec: $ pip install -b some_dir lcmap_client
 
 ## Configuration
 

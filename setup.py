@@ -57,9 +57,14 @@ setup(
     keywords=[
         # eg: "keyword1", "keyword2", "keyword3",
     ],
-    install_requires=get_install_reqs("requirements/base.txt"),
+    #install_requires=get_install_reqs("requirements/base.txt"),
+    install_requires=['six','requests', 'pylru','termcolor','nose',
+                      'click','DateTime', 'pygdal>=1.11.4,<=1.11.4.999',
+                      'pandas'
+    ],
     extras_require={
-        # eg: 'rst': ["docutils>=0.11"],
+        'dev': ['nose'],
+        'test': ['nose']
     },
     entry_points='''
         [console_scripts]

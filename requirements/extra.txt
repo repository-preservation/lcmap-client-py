@@ -1,4 +1,0 @@
-gnureadline
-gdal
-numpy
-pandas

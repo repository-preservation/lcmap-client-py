@@ -1,7 +1,0 @@
-six
-requests
-pylru
-termcolor
-nose
-click
-DateTime
