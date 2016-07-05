@@ -54,8 +54,8 @@ setup(
                       'pandas'
     ],
     extras_require={
-        'dev': ['nose'],
-        'test': ['nose']
+        'dev': ['nose', 'tox'],
+        'test': ['nose', 'tox']
     },
     entry_points='''
         [console_scripts]
