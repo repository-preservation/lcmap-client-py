@@ -31,7 +31,7 @@ def min_gdal_version():
             .format(version_info.major,
                     version_info.minor,
                     version_info.micro))
-    return version
+    return version.decode('utf-8')
 
 
 def max_gdal_version():
