@@ -2,15 +2,51 @@
 import glob
 import re
 import io
+from sys import version_info
 from os.path import basename
 from os.path import splitext
-
 from setuptools import find_packages
 from setuptools import setup
+
 
 def read(filename, codec='utf-8'):
     with io.open(filename, encoding=codec) as handle:
         return handle.read()
+
+
+def min_gdal_version():
+    ''' Returns the installed gdal version or Exception if not installed '''
+
+    cmd = ['gdal-config', '--version']
+
+    if version_info >= (2,4) and version_info <= (2,6):
+        from subprocess import Popen, PIPE
+        p = Popen(cmd, stdout=PIPE)
+        version = p.communicate()[0].strip()
+    elif version_info >=(2,7):
+        from subprocess import check_output
+        version = check_output(cmd).strip()
+    else:
+        raise Exception("Unsupported Python version:{0}.{1}.{2}"
+            .format(version_info.major,
+                    version_info.minor,
+                    version_info.micro))
+    return version
+
+
+def max_gdal_version():
+    ''' Returns the maximum pygdal version that can be installed '''
+    parts = min_gdal_version().split('.')
+    if len(parts) == 3:
+        parts.append('999')
+        max_version = '.'.join(parts)
+    elif len(parts) > 3:
+        max_version = '.'.join(parts)
+    else:
+        raise Exception("Can't determine max gdal version from {0}"
+            .format(min_gdal_version()))
+    return max_version
+
 
 setup(
     name="lcmap-client",
@@ -50,14 +86,17 @@ setup(
         # eg: "keyword1", "keyword2", "keyword3",
     ],
     install_requires=['six', 'requests', 'pylru', 'termcolor', 'nose',
-                      'click', 'DateTime', 'pygdal>=1.11.4,<=1.11.4.999',
+                      'click', 'DateTime',
+                      'pygdal>={0},<={1}'.format(min_gdal_version(),
+                                                  max_gdal_version()),
                       'pandas'
     ],
     extras_require={
         'dev': ['nose', 'tox'],
         'test': ['nose', 'tox']
     },
-    entry_points='''
-        [console_scripts]
-        lcmap=lcmap.client.scripts.cl_tool.main:main
-    ''')
+    entry_points= {
+        'console_scripts': [
+        'lcmap=lcmap.client.scripts.cl_tool.main:main']
+    },
+)
