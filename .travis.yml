@@ -1,8 +1,9 @@
+sudo: required
+dist: trusty
 language: python
 python:
   - "2.7"
   - "3.4"
-sudo: required
 env:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
@@ -12,15 +13,18 @@ before_install:
   - python --version
   - uname -a
   - lsb_release -a
-  - sudo apt-get install -y python-gdal python-virtualenv
-  - sudo apt-get install -y python3-gdal
+    #  - sudo apt-get install python-gdal python-virtualenv
+    #- sudo apt-get install python3-gdal
+  - sudo apt-get install python-pip
+  - sudo apt-get install gfortran
+  - sudo apt-get install g++
+  - sudo apt-get install python-dev
+  - sudo apt-get install libgdal1h
+  - sudo apt-get install libgdal1-dev
 install:
-  - pip install --upgrade pip
-  - pip install --upgrade wheel
-  - pip install --upgrade setuptools
   - pip install tox
   - pip install tox-travis
-  - pip install --timeout=30 --no-index --trusted-host $WHEELHOST --find-links $WHEELHOUSE numpy==1.6 pandas || pip install numpy==1.6 pandas
+  - pip install .
 before_script:
   - tests/support/setup_deps.sh
 script:

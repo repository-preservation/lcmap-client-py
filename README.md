@@ -13,13 +13,17 @@ Centos 7:
   - gdal-devel
   - gdal
 
+Ubuntu 14.04:
+  - python-pip
+  - gfortran
+  - g++
+  - python-dev
+  - libgdal1h
+  - libgdal1-dev
+
 Ubuntu 16.04:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Planned 
+  
 
 ## Installing
 ```bash
