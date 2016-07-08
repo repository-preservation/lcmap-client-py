@@ -31,7 +31,7 @@ def min_gdal_version():
             .format(version_info.major,
                     version_info.minor,
                     version_info.micro))
-    return version.decode('utf-8')
+    return version.encode('utf-8')
 
 
 def max_gdal_version():
@@ -45,15 +45,15 @@ def max_gdal_version():
     else:
         raise Exception('Can\'t determine max gdal version from {0}'
             .format(min_gdal_version()))
-    return max_version.decode('utf-8')
+    return max_version.encode('utf-8')
 
-
+'''
 setup(
     name='lcmap-client',
     version='0.5.0',
     license='NASA Open Source Agreement 1.3',
     description='LCMAP REST Service Client (Python)',
-    long_description='{0}'.format(read('README.md')),
+    long_description='{0}'.format(str(read('README.md')).encode('ascii', 'ignore'),
     author='USGS EROS',
     author_email='http://eros.usgs.gov',
     url='https://github.com/usgs-eros/lcmap-client-py',
@@ -99,4 +99,4 @@ setup(
         'console_scripts': [
         'lcmap=lcmap.client.scripts.cl_tool.main:main']
     },
-)
+)'''
