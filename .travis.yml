@@ -24,11 +24,9 @@ before_install:
   - pip install tox
   - pip install tox-travis
 install:
-  - pip install -e .
-before_script:
-  - tests/support/setup_deps.sh
-script:
-  - tox -v
+    - pip install tox-travis
+before_script: tests/support/setup_deps.sh
+script: tox -v
 notifications:
   email:
     on_success: never
