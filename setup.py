@@ -2,15 +2,27 @@
 import glob
 import re
 import io
+import sys
 from sys import version_info
 from os.path import basename
 from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.test import test as TestCommand
 
+class Tox(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import tox
+        errcode = tox.cmdline(self.test_args)
+        sys.exit(errcode)
 
-def read(filename, codec='utf-8'):
-    with io.open(filename, encoding=codec) as handle:
+def read(filename, codec=None):
+    with io.open(filename, mode='rb', encoding=codec) as handle:
         return handle.read()
 
 
@@ -31,11 +43,16 @@ def min_gdal_version():
             .format(version_info.major,
                     version_info.minor,
                     version_info.micro))
-    return version.encode('utf-8')
+
+    if (type(version) is not str):
+        version = version.decode('utf-8')
+
+    return version
 
 
 def max_gdal_version():
     ''' Returns the maximum pygdal version that can be installed '''
+    #parts = min_gdal_version().decode('utf-8').split('.')
     parts = min_gdal_version().split('.')
     if len(parts) == 3:
         parts.append('999')
@@ -45,15 +62,19 @@ def max_gdal_version():
     else:
         raise Exception('Can\'t determine max gdal version from {0}'
             .format(min_gdal_version()))
-    return max_version.encode('utf-8')
 
-'''
+    if (type(max_version) is not str):
+        max_version = max_version.decode('utf-8')
+
+    return max_version
+
+
 setup(
     name='lcmap-client',
     version='0.5.0',
     license='NASA Open Source Agreement 1.3',
     description='LCMAP REST Service Client (Python)',
-    long_description='{0}'.format(str(read('README.md')).encode('ascii', 'ignore'),
+    long_description='{0}'.format(read('README.md')),
     author='USGS EROS',
     author_email='http://eros.usgs.gov',
     url='https://github.com/usgs-eros/lcmap-client-py',
@@ -91,12 +112,14 @@ setup(
                                                  max_gdal_version()),
                       'pandas'
     ],
+    tests_require=['tox'],
+    cmdclass = {'test': Tox},
     extras_require={
-        'dev': ['nose', 'tox'],
-        'test': ['nose', 'tox']
+        'dev': [''],
+        'test': ['']
     },
     entry_points= {
         'console_scripts': [
         'lcmap=lcmap.client.scripts.cl_tool.main:main']
     },
-)'''
+)

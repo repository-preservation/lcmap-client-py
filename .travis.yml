@@ -21,11 +21,10 @@ before_install:
   - sudo apt-get -y install python-dev
   - sudo apt-get -y install libgdal1h
   - sudo apt-get -y install libgdal1-dev
-  - pip install tox
-  - pip install tox-travis
 install:
+    - pip install wheel
     - pip install tox-travis
-    - pip install -r requirements.txt
+    - pip install . 
 before_script: tests/support/setup_deps.sh
 script: tox -v
 notifications:
