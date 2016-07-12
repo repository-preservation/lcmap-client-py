@@ -6,31 +6,33 @@
 
 ## System Requirements
 Centos 7:
-  - python-pip
-  - gcc-gfortran
-  - gcc-c++
-  - python-devel
-  - gdal-devel
-  - gdal
+- Python Version 2.7
+```bash
+    $ sudo apt-get install python-pip python-devel
+                           gcc-c++ gcc-gfortran
+                           gdal-devel gdal
+```
+
+- Python Version 3.4
+```bash
+    $ sudo apt-get install python3-pip python3-devel
+                           gcc-c++ gcc-gfortran
+                           gdal-devel gdal
+```
 
 Ubuntu 14.04:
-  - python-pip
-  - gfortran
-  - g++
-  - python-dev
-  - libgdal1h
-  - libgdal1-dev
-
-Ubuntu 16.04:
-  - Planned 
-  
+```bash
+$ sudo yum install -y python-pip python-dev
+                      libgdal1h libgdal1-dev
+                      gfortran g++
+```
 
 ## Installing
 ```bash
 $ pip install lcmap_client
 ```
 
-If /tmp is mounted noexec: 
+If /tmp is mounted noexec:
 ```bash
 $ pip install -b some_dir lcmap_client
 ```
@@ -116,5 +118,3 @@ NASA Open Source Agreement, Version 1.3.
 [lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
 [pypi]: https://pypi.python.org/pypi/lcmap-client
 [pypi-badge]: https://img.shields.io/pypi/v/lcmap-client.svg?maxAge=2592000
-
-
