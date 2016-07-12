@@ -42,6 +42,11 @@ Client library configuration is done using a Config/INI file. For more
 information, visit the client documentation link below -- in particular, the
 section "The Client Libraries" > "Configuration".
 
+## Testing
+
+```bash
+$ python setup.py test
+```
 
 ## Documentation
 
