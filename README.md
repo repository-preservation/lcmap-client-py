@@ -5,23 +5,21 @@
 [Very WIP ... not ready for use]
 
 ## System Requirements
-#### Centos 7
-
-Python 2.7
+#### Centos 7 - Python 2.7
 ```bash
 $ sudo apt-get install python-pip python-devel
                        gcc-c++ gcc-gfortran
                        gdal-devel gdal
 ```
 
-Python 3.4
+#### Centos 7 - Python 3.4
 ```bash
 $ sudo apt-get install python3-pip python3-devel
                        gcc-c++ gcc-gfortran
                        gdal-devel gdal
 ```
 
-#### Ubuntu 14.04
+#### Ubuntu 14.04 - Python 2.7
 ```bash
 $ sudo yum install -y python-pip python-dev
                       libgdal1h libgdal1-dev
