@@ -6,14 +6,14 @@
 
 ## System Requirements
 Centos 7:
-- Python Version 2.7
+Python Version 2.7
 ```bash
     $ sudo apt-get install python-pip python-devel
                            gcc-c++ gcc-gfortran
                            gdal-devel gdal
 ```
 
-- Python Version 3.4
+Python Version 3.4
 ```bash
     $ sudo apt-get install python3-pip python3-devel
                            gcc-c++ gcc-gfortran
