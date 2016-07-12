@@ -31,8 +31,7 @@ $ sudo apt-get -y install python-pip python-dev \
 $ pip install lcmap_client
 ```
 
-If /tmp is mounted noexec specify a directory with rwx permissions using
-the -b flag:
+If /tmp is mounted noexec specify a build directory with rwx permissions:
 ```bash
 $ pip install -b some_dir lcmap_client
 ```
