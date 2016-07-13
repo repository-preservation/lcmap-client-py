@@ -10,23 +10,27 @@ from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
+
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
+
     def run_tests(self):
         #import here, cause outside the eggs aren't loaded
         import tox
         errcode = tox.cmdline(self.test_args)
         sys.exit(errcode)
 
+
 def read(filename, codec=None):
     with io.open(filename, mode='rb', encoding=codec) as handle:
         return handle.read()
 
 
-def min_gdal_version():
+def gdal_version():
     ''' Returns the installed gdal version or Exception if not installed '''
 
     cmd = ['gdal-config', '--version']
@@ -44,29 +48,11 @@ def min_gdal_version():
                     version_info.minor,
                     version_info.micro))
 
+    # necessary for Python 2 & 3 compatibility
     if (type(version) is not str):
         version = version.decode('utf-8')
 
     return version
-
-
-def max_gdal_version():
-    ''' Returns the maximum pygdal version that can be installed '''
-    #parts = min_gdal_version().decode('utf-8').split('.')
-    parts = min_gdal_version().split('.')
-    if len(parts) == 3:
-        parts.append('999')
-        max_version = '.'.join(parts)
-    elif len(parts) > 3:
-        max_version = '.'.join(parts)
-    else:
-        raise Exception('Can\'t determine max gdal version from {0}'
-            .format(min_gdal_version()))
-
-    if (type(max_version) is not str):
-        max_version = max_version.decode('utf-8')
-
-    return max_version
 
 
 setup(
@@ -104,12 +90,11 @@ setup(
         'Topic :: Utilities',
     ],
     keywords=[
-        # eg: "keyword1", "keyword2", "keyword3",
+        "lcmap", "usgs", "python"
     ],
     install_requires=['six', 'requests', 'pylru', 'termcolor', 'nose',
                       'click', 'DateTime',
-                      'pygdal>={0},<={1}'.format(min_gdal_version(),
-                                                 max_gdal_version()),
+                      'pygdal~={0}'.format(gdal_version()),
                       'pandas'
     ],
     tests_require=['tox'],
