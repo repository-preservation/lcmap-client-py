@@ -2,9 +2,9 @@
 
 *LCMAP REST Service Client for Python*
 
-[Very WIP ... not ready for use]
 
 ## System Requirements
+
 #### Centos 7 - Python 2.7
 ```bash
 $ sudo yum install -y  python-pip python-devel \
