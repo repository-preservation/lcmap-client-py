@@ -122,7 +122,7 @@ class HTTP(object):
         # content type, but right now the server is returning the fairly useless
         # application/octet-stream type, even for JSON
         self.log_errors(errors)
-        return Response(self, raw_resp, resp.get("result"), errors)
+        return Response(self, raw_resp, resp.data.get("result"), errors)
 
     def post(self, path, **kwargs):
         return self.request('POST', path, **kwargs)
