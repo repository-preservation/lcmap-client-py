@@ -10,16 +10,20 @@ from setuptools import find_packages
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
+
 class Tox(TestCommand):
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
+
     def run_tests(self):
         #import here, cause outside the eggs aren't loaded
         import tox
         errcode = tox.cmdline(self.test_args)
         sys.exit(errcode)
+
 
 def read(filename, codec=None):
     with io.open(filename, mode='rb', encoding=codec) as handle:
@@ -27,7 +31,7 @@ def read(filename, codec=None):
 
 
 def min_gdal_version():
-    ''' Returns the installed gdal version or Exception if not installed '''
+    """Returns the installed gdal version or Exception if not installed."""
 
     cmd = ['gdal-config', '--version']
 
@@ -71,7 +75,7 @@ def max_gdal_version():
 
 setup(
     name='lcmap-client',
-    version='0.5.0',
+    version='1.0.0-dev',
     license='NASA Open Source Agreement 1.3',
     description='LCMAP REST Service Client (Python)',
     long_description='{0}'.format(read('README.md')),
