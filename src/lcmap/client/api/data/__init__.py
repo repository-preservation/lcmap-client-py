@@ -21,7 +21,7 @@ class Data(base.APIComponent):
         resp = self.http.get(
                 context,
                 params={"band": band, "point": point, "time": time})
-        spec = resp.result['spec']
+        spec = resp.result.get("spec")
         return (spec, [tile.Tile(t, spec, mask, shape, unscale) for t in resp.result['tiles']])
 
     def rod(self, band, x, y, t1, t2, mask=True, shape=True, unscale=True):
