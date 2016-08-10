@@ -25,7 +25,6 @@ class Auth(dict):
 
     def login(self, username="", password=""):
         log.debug("Logging in ...")
-        log.debug("MEOW")
         log.debug(login_context)
         if not username:
             username = self.cfg.get_username()

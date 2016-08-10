@@ -111,7 +111,7 @@ class HTTP(object):
         if raw_resp:
             log.debug("Got raw response: {}".format(raw_resp))
             resp = self.get_body(raw_resp)
-            result = resp.data.get("result")
+            result = resp.get("result")
             log.debug("JSON for response: {}".format(resp))
             errors = self.update_errors(errors, resp)
         else:
