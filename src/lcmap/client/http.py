@@ -111,10 +111,11 @@ class HTTP(object):
         if raw_resp:
             log.debug("Got raw response: {}".format(raw_resp))
             resp = self.get_body(raw_resp)
+            result = resp.get("result")
             log.debug("JSON for response: {}".format(resp))
             errors = self.update_errors(errors, resp)
         else:
-            resp = None
+            result = None
         if raw_resp.status_code == 404:
             msg = "Resource not found."
             errors.append(msg)
@@ -122,7 +123,7 @@ class HTTP(object):
         # content type, but right now the server is returning the fairly useless
         # application/octet-stream type, even for JSON
         self.log_errors(errors)
-        return Response(self, raw_resp, resp.get("result"), errors)
+        return Response(self, raw_resp, result, errors)
 
     def post(self, path, **kwargs):
         return self.request('POST', path, **kwargs)

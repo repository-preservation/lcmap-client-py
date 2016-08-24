@@ -21,8 +21,13 @@ class Data(base.APIComponent):
         resp = self.http.get(
                 context,
                 params={"band": band, "point": point, "time": time})
-        spec = resp.result['spec']
-        return (spec, [tile.Tile(t, spec, mask, shape, unscale) for t in resp.result['tiles']])
+        if resp.result:
+            spec = resp.result.get("spec")
+            tiles = resp.result.get("tiles")
+        else:
+            spec = {}
+            tiles = []
+        return (spec, [tile.Tile(t, spec, mask, shape, unscale) for t in tiles])
 
     def rod(self, band, x, y, t1, t2, mask=True, shape=True, unscale=True):
         "Get spec and rod for given band, point, x, y and times"
