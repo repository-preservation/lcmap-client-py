@@ -31,3 +31,10 @@ notifications:
   email:
     on_success: never
     on_failure: always
+      # the following won't work until this Travis CI
+      # bug is sorted:
+      # https://github.com/travis-ci/travis-ci/issues/2513
+      - lcmap-dev-notifications@googlegroups.com
+  slack:
+    rooms:
+      - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd 
