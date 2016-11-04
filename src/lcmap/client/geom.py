@@ -15,14 +15,14 @@ def _tile_point_to_proj_point(tile_x, tile_y, transform):
 
 def _proj_point_to_tile_point(proj_x, proj_y, transform):
     "Translate map coordinates into image coordinates"
-    inv_transform = gdal.InvGeoTransform(transform)
+    inv_transform = gdal.InvGeoTransform(transform).pop()
     image_x = (inv_transform[0] +
                proj_x * inv_transform[1] +
                proj_y * inv_transform[2])
     image_y = (inv_transform[3] +
                proj_x * inv_transform[4] +
                proj_y * inv_transform[5])
-    return (int(floor(image_x)), int(floor(image_y)))
+    return int(floor(image_x)), int(floor(image_y))
 
 
 def transform_coord(coord, matrix, src="", dst=""):
