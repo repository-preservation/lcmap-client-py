@@ -1,28 +1,27 @@
-from math import floor
-from osgeo import gdal
+from math import floor, ceil
+from collections import namedtuple
+
+GeoAffine = namedtuple('GeoAffine', ['ul_x', 'x_res', 'rot_1', 'ul_y', 'rot_2', 'y_res'])
 
 
 def _tile_point_to_proj_point(tile_x, tile_y, transform):
-    "Translate image coordinates into map coordinates"
-    map_x = (transform[0] +
-             tile_x * transform[1] +
-             tile_y * transform[2])
-    map_y = (transform[3] +
-             tile_x * transform[4] +
-             tile_y * transform[5])
-    return (map_x, map_y)
+    """
+    Translate image row, column into map coordinates
+    """
+    map_x = transform.ul_x + tile_x * transform.x_res + tile_y * transform.rot_1
+    map_y = transform.ul_y + tile_x * transform.rot_2 + tile_y * transform.y_res
+
+    return map_x, map_y
 
 
 def _proj_point_to_tile_point(proj_x, proj_y, transform):
-    "Translate map coordinates into image coordinates"
-    inv_transform = gdal.InvGeoTransform(transform)
-    image_x = (inv_transform[0] +
-               proj_x * inv_transform[1] +
-               proj_y * inv_transform[2])
-    image_y = (inv_transform[3] +
-               proj_x * inv_transform[4] +
-               proj_y * inv_transform[5])
-    return (int(floor(image_x)), int(floor(image_y)))
+    """
+    Translate map coordinates into image coordinates
+    Assumes North is up
+    """
+    col = floor((proj_x - transform.ul_x - transform.ul_y * transform.rot_1) / transform.x_res)
+    row = ceil((proj_y - transform.ul_y - transform.ul_x * transform.rot_2) / transform.y_res)
+    return int(col), int(row)
 
 
 def transform_coord(coord, matrix, src="", dst=""):
@@ -43,9 +42,6 @@ def transform_coord(coord, matrix, src="", dst=""):
 
 
 def get_transform_matrix(tile, spec):
-    ""
-    upper_left_map_x, upper_left_map_y = tile.x, tile.y
-    pixel_res_meters_x, pixel_res_meters_y = spec['pixel_x'], spec['pixel_y']
-    rotation = 0.0
-    return [upper_left_map_x, pixel_res_meters_x, rotation,
-            upper_left_map_y, rotation, pixel_res_meters_y]
+    """Return Geo Transform matrix for given tile, spec"""
+    return GeoAffine(tile['x'], spec['pixel_x'], spec['shift_x'],
+                     tile['y'], spec['shift_y'], spec['pixel_y'])
