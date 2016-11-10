@@ -1,118 +1,118 @@
-import json
 import unittest
-
-from lcmap_fakes import FakeLCMAPHTTP, FakeLCMAPRESTResponse
-
-from lcmap.client import geom, serializer
-from lcmap.client.api.data import surface_reflectance
+from lcmap.client import Client, geom
 
 
 class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
-        params = {
+        self.client = Client()
+        # corner of tile, api currently reporting
+        # floor, 'should' be ceil
+        self.tx, self.ty = -1850880, 2952960
+        # random geo coords
+        self.px, self.py = -1850865, 2956785
+        self.coord = self.px, self.py
+        self.params = {
             'band': 'LANDSAT_8/OLI_TIRS/sr_band2',
-            'x':    -1850865,
-            'y':     2956785,
+            'x': self.px,
+            'y': self.py,
             't1':   '2013-01-01',
             't2':   '2015-01-01'
         }
-        # Load the saved data that was originally returned by running the above
-        # query against the LCMAP REST service.
-        data = json.load(open("tests/data/tiles-result-payload.json"))
-        fake_resp = FakeLCMAPRESTResponse(data)
-        fake_http = FakeLCMAPHTTP(fake_resp)
-        sr = surface_reflectance.SurfaceReflectance(fake_http)
-        (self.spec, self.tiles) = sr.tiles(**params)
+        self.spec, self.tiles = self.client.data.tiles(**self.params)
         self.tile = self.tiles[0]
-        self.xform_matrix = geom.get_transform_matrix(self.tile, self.spec)
+        self.xform_matrix = self.tile._point_transformer
+        # tiles are 128 x 128 pixels
+        self.tile_len = 128
+        self.data_shape = [self.tile_len, self.tile_len]
+        # tile index starts at 0
+        self.tile_ind = self.tile_len - 1
+        # pixel resolution 30m
+        self.tile_res = 30
 
 
-class FakeObjectsTestCase(BaseTestCase):
+class ObjectsTestCase(BaseTestCase):
     "Make sure that all the bits are set up properly."
 
     def test_spec(self):
-        self.assertEqual(self.spec["data_shape"], [256, 256])
+        self.assertEqual(self.spec["data_shape"], self.data_shape)
 
     def test_tiles(self):
-        self.assertEqual(len(self.tiles), 2)
+        self.assertEqual(len(self.tiles), 38)
 
     def test_tile(self):
         self.assertEqual(type(self.tile).__name__, "Tile")
         self.assertEqual(self.tile.spec, self.spec)
 
     def test_xform_matrix(self):
-        self.assertEqual(type(self.xform_matrix).__name__, "list")
-        self.assertEqual(self.xform_matrix[0], -1850865)
+        self.assertEqual(type(self.xform_matrix).__name__, "GeoAffine")
+        self.assertEqual(self.xform_matrix[0], self.tx)
 
 
 class PublicFunctionsTestCase(BaseTestCase):
 
     def test_transform_coord_map_to_image_upper_left(self):
-        coord = (-1850865, 2956785)
         point = geom.transform_coord(
-                coord, self.xform_matrix, src="map", dst="image")
-        self.assertEqual(point, (0,0))
+                self.coord, self.xform_matrix, src="map", dst="image")
+        self.assertEqual(point, (0, -self.tile_ind))
 
     def test_transform_coord_map_to_image_upper_right(self):
-        coord = (-1850865+(30*255), 2956785)
+        coord = self.px+(self.tile_res*self.tile_ind), self.py
         point = geom.transform_coord(
                 coord, self.xform_matrix, src="map", dst="image")
-        self.assertEqual(point, (255,0))
+        self.assertEqual(point, (self.tile_ind, -self.tile_ind))
 
     def test_transform_coord_map_to_image_lower_left(self):
-        coord = (-1850865, 2956785 + ((-30)*(256-1)))
+        coord = self.px, self.py + ((-self.tile_res)*self.tile_ind)
         point = geom.transform_coord(
                 coord, self.xform_matrix, src="map", dst="image")
-        self.assertEqual(point, (0,255))
+        self.assertEqual(point, (0, 0))
 
     def test_transform_coord_map_to_image_lower_right(self):
-        coord = (-1850865+(30*255), 2956785+((-30)*255))
+        coord = self.px+(self.tile_res*self.tile_ind), self.py+((-self.tile_res)*self.tile_ind)
         point = geom.transform_coord(
                 coord, self.xform_matrix, src="map", dst="image")
-        self.assertEqual(point, (255,255))
+        self.assertEqual(point, (self.tile_ind, 0))
 
     def test_transform_coord_map_to_image_offset(self):
-        coord  = (-1850865+2, 2956785-2)
+        coord = self.px+2, self.py-2
         point = geom.transform_coord(
                 coord, self.xform_matrix, src="map", dst="image")
-        self.assertEqual(point, (0,0))
+        self.assertEqual(point, (0, -self.tile_ind))
 
     def test_rod(self):
-        (x, y) = (-1850865, 2956785)
-        rod = [(t.acquired, t[x,y]) for t in self.tiles]
-        self.assertEqual(
-            [('2014-08-07T00:00:00Z', 0.035099999113299418),
-             ('2014-08-23T00:00:00Z', 0.027199999312870204)],
-            rod)
+        rod = [(t.acquired, t[self.px, self.py]) for t in self.tiles]
+        self.assertEqual([('2013-04-14T05:00:00Z', 0.87080000000000002),
+                          ('2013-04-30T05:00:00Z', 0.65439999999999998)],
+                         rod[:2])
+        self.assertEqual(len(rod), 38)
 
 
 class PrivateFunctionsTestCase(BaseTestCase):
 
     def test_upper_left_proj_point_to_tile_point(self):
-        (px, py) = (-1850865, 2956785)
-        point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
-        self.assertEqual(point, (0,0))
+        point = geom._proj_point_to_tile_point(self.px, self.py, self.xform_matrix)
+        self.assertEqual(point, (0, -self.tile_ind))
 
     def test_upper_right_proj_point_to_tile_point(self):
-        (px, py) = (-1850865+(30*255), 2956785)
+        px, py = self.px+(self.tile_res*self.tile_ind), self.py
         point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
-        self.assertEqual(point, (255,0))
+        self.assertEqual(point, (self.tile_ind, -self.tile_ind))
 
     def test_lower_left_proj_point_to_tile_point(self):
-        (px, py) = (-1850865, 2956785 + ((-30)*(256-1)))
+        px, py = self.px, self.py + ((-self.tile_res)*self.tile_ind)
         point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
-        self.assertEqual(point, (0,255))
+        self.assertEqual(point, (0, 0))
 
     def test_lower_right_proj_point_to_tile_point(self):
-        (px, py) = (-1850865+(30*255), 2956785+((-30)*255))
+        px, py = self.px+(self.tile_res*self.tile_ind), self.py+((-self.tile_res)*self.tile_ind)
         point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
-        self.assertEqual(point, (255,255))
+        self.assertEqual(point, (self.tile_ind, 0))
 
     def test_proj_point_offset_from_pixel_grid(self):
-        (px, py)  = (-1850865+2, 2956785-2)
+        px, py  = self.px+2, self.py-2
         point = geom._proj_point_to_tile_point(px, py, self.xform_matrix)
-        self.assertEqual(point, (0,0))
+        self.assertEqual(point, (0, -self.tile_ind))
 
 
 if __name__ == '__main__':

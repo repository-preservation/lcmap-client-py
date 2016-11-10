@@ -48,7 +48,7 @@ class Tile(object):
         self._tile = tile
         self._spec = spec
         self._data = decode(spec, tile, mask, shape, unscale)
-        self._point_transformer = geom.get_transform_matrix(self, spec)
+        self._point_transformer = geom.get_transform_matrix(tile, spec)
         pass
 
     @property
@@ -81,9 +81,5 @@ class Tile(object):
 
     def __getitem__(self, proj_point):
         """Get value for given projection point"""
-        # XXX why isn't this next line using the self._point_transformer matrix
-        #     that's areadly been created?
-        tm = geom.get_transform_matrix(self, self._spec)  # blech
-        (x, y) = proj_point
-        (tx, ty) = geom.transform_coord(proj_point, tm, src="map", dst="image")
+        (tx, ty) = geom.transform_coord(proj_point, self._point_transformer, src="map", dst="image")
         return self._data[tx, ty]
