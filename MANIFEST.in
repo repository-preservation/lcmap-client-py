@@ -1,4 +1,4 @@
-graft src
+graft lcmap_client 
 graft tests
 
 include CONTRIBUTING.md
